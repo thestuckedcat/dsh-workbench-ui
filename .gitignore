@@ -1,0 +1,12 @@
+# Local test runtime (pinned Node binary is copied from the workspace, never committed)
+runtime/
+# Scratch profile/composition output
+scratch/
+# Detached third-party package trees
+node_modules/
+# Local-only read-only extraction of the pinned Harness archive (not redistributable here)
+.scratch-rc5/
+# Logs and temporary packing output
+*.log
+*.tgz
+coverage/

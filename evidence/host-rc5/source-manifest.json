@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-06T17:57:10.590Z",
+  "purpose": "Pinned rc.5 archive/source seams for the local workbench adapter; read-only evidence, no runtime acceptance",
+  "host": {
+    "version": "0.2.1-rc.5",
+    "electron": "44.7.0",
+    "embedded_node": "24.21.0",
+    "build_commit": "d4db512a969fccf0c5cc7ec8fe38e9c1d27af916",
+    "app_asar_sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915",
+    "executable_sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+  },
+  "archive": {
+    "path": "E:/dsh/resources/app.asar",
+    "size": 182766714,
+    "header_size": 4760404,
+    "entry_count": 18234
+  },
+  "executable": {
+    "path": "E:/dsh/DeepSeek Harness.exe",
+    "size": 246343144,
+    "sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+  },
+  "digests": {
+    "ok": true,
+    "host": {
+      "version": "0.2.1-rc.5",
+      "electron": "44.7.0",
+      "embedded_node": "24.21.0",
+      "build_commit": "d4db512a969fccf0c5cc7ec8fe38e9c1d27af916",
+      "app_asar_sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915",
+      "executable_sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+    },
+    "archive": {
+      "path": "E:/dsh/resources/app.asar",
+      "sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915"
+    },
+    "executable": {
+      "path": "E:/dsh/DeepSeek Harness.exe",
+      "sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+    },
+    "failures": []
+  },
+  "files": [
+    {
+      "path": "dsh/node_modules/@deepseek-ai/dsh-client-modules/lib/client.js",
+      "expected_sha256": "426084f8672c26a469566a3f43c91a9b0d1dd73d0834028e553a6d0fa9cffa44",
+      "actual_sha256": "426084f8672c26a469566a3f43c91a9b0d1dd73d0834028e553a6d0fa9cffa44",
+      "size": 46292,
+      "hash_ok": true,
+      "probes": [
+        {
+          "label": "module loader registration facade",
+          "ok": true
+        },
+        {
+          "label": "factory receive require",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "path": "dsh/node_modules/@deepseek-ai/dsh-client-modules/lib/index.js",
+      "expected_sha256": "a2a33e32f13fdc9598b4751c4c22fb72789190bf5ba7337cd5a3d0cb4b4417ec",
+      "actual_sha256": "a2a33e32f13fdc9598b4751c4c22fb72789190bf5ba7337cd5a3d0cb4b4417ec",
+      "size": 42376,
+      "hash_ok": true,
+      "probes": [
+        {
+          "label": "dsh.client scanner",
+          "ok": true
+        },
+        {
+          "label": "boot graph wire",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "path": "dsh/node_modules/@deepseek-ai/dsh-client-ui-layout/lib/client.js",
+      "expected_sha256": "eb011a7b5699fac7f3ad0aa15408f46a6cf47f79b8cc15db1f81739e81e70587",
+      "actual_sha256": "eb011a7b5699fac7f3ad0aa15408f46a6cf47f79b8cc15db1f81739e81e70587",
+      "size": 32834,
+      "hash_ok": true,
+      "probes": [
+        {
+          "label": "selectPanel service",
+          "ok": true
+        },
+        {
+          "label": "main keyed slot",
+          "ok": true
+        },
+        {
+          "label": "hasMainPanel key check",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "path": "dsh/node_modules/@deepseek-ai/dsh-client-ui-renderer/lib/client.js",
+      "expected_sha256": "dbdb3f26bfbc1d143bc8a0eed5982a2507c4f0cf8027e7c170f3bed3604be356",
+      "actual_sha256": "dbdb3f26bfbc1d143bc8a0eed5982a2507c4f0cf8027e7c170f3bed3604be356",
+      "size": 78299,
+      "hash_ok": true,
+      "probes": [
+        {
+          "label": "slots.register",
+          "ok": true
+        },
+        {
+          "label": "slot renderer install",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "path": "dsh/node_modules/@deepseek-ai/dsh-client-ui-sidebar/lib/client.js",
+      "expected_sha256": "f5cd3c44c4d2f42d017bc3f133758a54af2f0fcafce7173a983045c1f2976a4b",
+      "actual_sha256": "f5cd3c44c4d2f42d017bc3f133758a54af2f0fcafce7173a983045c1f2976a4b",
+      "size": 36895,
+      "hash_ok": true,
+      "probes": [
+        {
+          "label": "panellist slot",
+          "ok": true
+        },
+        {
+          "label": "row click selectPanel",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "path": "dsh/node_modules/@deepseek-ai/dsh-client-connection/lib/index.js",
+      "expected_sha256": "0ebcca7583e082716f79b0b55bc1749d48269cc8db2989b043b321b57abd3684",
+      "actual_sha256": "0ebcca7583e082716f79b0b55bc1749d48269cc8db2989b043b321b57abd3684",
+      "size": 44434,
+      "hash_ok": true,
+      "probes": [
+        {
+          "label": "rpc.handle",
+          "ok": true
+        },
+        {
+          "label": "handler signature",
+          "ok": true
+        },
+        {
+          "label": "owner principal",
+          "ok": true
+        },
+        {
+          "label": "server response schema",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "path": "dsh/node_modules/@deepseek-ai/dsh-client-connection/lib/client.browser.js",
+      "expected_sha256": "dfc3544eb894c74b340a4c4c63a8c125fd2e983df9efed5885712574af994e62",
+      "actual_sha256": "dfc3544eb894c74b340a4c4c63a8c125fd2e983df9efed5885712574af994e62",
+      "size": 60601,
+      "hash_ok": true,
+      "probes": [
+        {
+          "label": "browser connection provide",
+          "ok": true
+        },
+        {
+          "label": "rpc.call signature",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "path": "dsh/node_modules/@deepseek-ai/dsh-app-boot/lib/index.js",
+      "expected_sha256": "5135179ac810e4f626f32ec3bdc3293dc7d2028e8aa92e5e0c006f1a33b78e76",
+      "actual_sha256": "5135179ac810e4f626f32ec3bdc3293dc7d2028e8aa92e5e0c006f1a33b78e76",
+      "size": 203572,
+      "hash_ok": true,
+      "probes": [
+        {
+          "label": "bundle patch resolution",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "path": "dsh/node_modules/@deepseek-ai/dsh-web-app/lib/index.js",
+      "expected_sha256": "6662ca712368c56fb8818efa53039ef92ce215a328a76b9cdd5e1bed624a0e84",
+      "actual_sha256": "6662ca712368c56fb8818efa53039ef92ce215a328a76b9cdd5e1bed624a0e84",
+      "size": 7844,
+      "hash_ok": true,
+      "probes": [
+        {
+          "label": "web app runtime glue",
+          "ok": true
+        }
+      ]
+    }
+  ],
+  "facts": {
+    "static_modules": [
+      "react",
+      "react/jsx-runtime",
+      "react-dom",
+      "react-dom/client",
+      "@deepseek-ai/cordis",
+      "zod",
+      "@tanstack/react-virtual",
+      "@deepseek-ai/dsh-client-store",
+      "@deepseek-ai/dsh-client-ui-slots",
+      "@deepseek-ai/dsh-client-ui-primitives",
+      "@deepseek-ai/dsh-client-ui-dockkit"
+    ],
+    "static_modules_source": null,
+    "client_bundle_format": "window.__ModuleLoader__.load({id, factory: (require) => ({name, inject, apply})})",
+    "host_rpc": "ctx.connection.rpc.handle(channel, async (endpoint, payload, signal, peer) => value)",
+    "client_rpc": "ctx.connection.rpc.call(channel, endpoint, payload, signal) -> {ok:true,value}|{ok:false,error}",
+    "navigation": "ctx.layout.selectPanel(panel_key|null); main slot kind=keyed scope=root; panellist entry id === main key"
+  },
+  "failures": [],
+  "limitations": [
+    "Read-only archive parse; no extraction to the Harness profile and no execution of archive code.",
+    "Source probes assert reviewed text facts; they do not prove a live panel renders.",
+    "Full client boot and Host profile loader are recorded by the T4 smoke, not by this file."
+  ]
+}

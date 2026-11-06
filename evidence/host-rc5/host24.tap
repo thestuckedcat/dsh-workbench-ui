@@ -1,0 +1,22 @@
+TAP version 13
+# Subtest: real pinned rc.5 Cordis mounts, serves and disposes the workbench host plugin
+ok 1 - real pinned rc.5 Cordis mounts, serves and disposes the workbench host plugin
+  ---
+  duration_ms: 76.6125
+  type: 'test'
+  ...
+# Subtest: real pinned rc.5 Context keeps a blocked workbench when config is missing
+ok 2 - real pinned rc.5 Context keeps a blocked workbench when config is missing
+  ---
+  duration_ms: 1.2941
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 168.5678

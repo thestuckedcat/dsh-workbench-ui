@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "id": "05",
+  "name": "Local Memory (fixture)",
+  "release_version": "0.0.0-fixture",
+  "artifact_ref": "fixture/05-local-memory",
+  "sha256": "e764039fc167ecd3ac380423a923d3154ab71637a4920997930e96dc03ac1e36",
+  "host": {
+    "verified_versions": [
+      "0.2.1-rc.5"
+    ],
+    "declared_range": "^0.2.1-rc.5",
+    "services": []
+  },
+  "requires": [],
+  "provides": {
+    "tools": [
+      {
+        "name": "memory_search",
+        "operation_kind": "read"
+      },
+      {
+        "name": "memory_write",
+        "operation_kind": "write"
+      },
+      {
+        "name": "memory_admin_panel",
+        "operation_kind": "read"
+      }
+    ],
+    "slots": [
+      {
+        "name": "main",
+        "key": "local-memory",
+        "mode": "keyed"
+      }
+    ],
+    "writers": [
+      {
+        "resource": "memory/store",
+        "scope": "global"
+      }
+    ],
+    "hooks": [
+      {
+        "name": "memory.turn",
+        "mode": "observe"
+      }
+    ]
+  },
+  "network": {
+    "mode": "none",
+    "target_refs": []
+  },
+  "dispose": {
+    "supports_quiesce": true,
+    "timeout_ms": 5000
+  },
+  "entry": {
+    "kind": "panel",
+    "ref": "panel/local-memory"
+  },
+  "evidence": {
+    "release_ref": "fixture/05/release",
+    "contract_tests_ref": "fixture/05/contract-tests",
+    "host_smoke_ref": "fixture/05/host-smoke",
+    "network_ref": "fixture/05/network"
+  },
+  "extra_field": true
+}

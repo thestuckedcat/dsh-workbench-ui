@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-06T18:25:23.564Z",
+  "mode": "isolated",
+  "fixture": true,
+  "fixture_mode": true,
+  "command": "runtime/node.exe tools/smoke.mjs --isolated --fixture --network-evidence",
+  "host": {
+    "version": "0.2.1-rc.5",
+    "electron": "44.7.0",
+    "embedded_node": "24.21.0",
+    "build_commit": "d4db512a969fccf0c5cc7ec8fe38e9c1d27af916",
+    "app_asar_sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915",
+    "executable_sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+  },
+  "checks": {
+    "source_lock": {
+      "ok": true,
+      "host": {
+        "version": "0.2.1-rc.5",
+        "exe_sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4",
+        "asar_sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915",
+        "runtime": {
+          "executable": "runtime/electron-run-as-node",
+          "version": "24.21.0",
+          "sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+        }
+      },
+      "failures": []
+    },
+    "fixture_catalog": {
+      "ok": true,
+      "catalog_id": "local-workbench-fixtures",
+      "modules": [
+        "05",
+        "07"
+      ]
+    },
+    "fixture_compose": {
+      "ok": true,
+      "status": "active",
+      "ordered": [
+        "05",
+        "07"
+      ],
+      "composition_digest": "9d4be8a426c5885173c4b97d75e85180e0fcecb785200386a9d4f56e47ae1ce6",
+      "revision": 1,
+      "scratch_root": "E:\\dsh\\plugin\\08-workbench-ui\\scratch\\smoke\\home\\workbench"
+    },
+    "host_rpc_component": {
+      "ok": true,
+      "checks": {
+        "context_list_ok": true,
+        "owner_required": true,
+        "status_ok": true,
+        "after_revision_no_body": true,
+        "navigation_accepted": true,
+        "composition_preview_ok": true,
+        "no_secret_echo": true
+      },
+      "responses": {
+        "contextList": {
+          "status": "ok",
+          "reason_code": null
+        },
+        "contextListDenied": {
+          "status": "denied",
+          "reason_code": "OWNER_REQUIRED"
+        },
+        "status": {
+          "status": "ok",
+          "reason_code": null
+        },
+        "statusRepeat": {
+          "status": "ok",
+          "reason_code": null
+        },
+        "navigation": {
+          "status": "ok",
+          "reason_code": null
+        },
+        "preview": {
+          "status": "ok",
+          "reason_code": null
+        }
+      }
+    },
+    "client_bundle_static": {
+      "ok": true,
+      "checks": {
+        "loader_facade": true,
+        "package_id": true,
+        "main_key": true,
+        "react_only_require": true,
+        "no_fetch": true,
+        "no_remote_assets": true,
+        "no_dynamic_import": true
+      },
+      "bytes": 63055,
+      "sha256": "54e8679df0bc0e39e25bc9a3971ac192e5cf91155a43627138b9920a2913e7c5"
+    },
+    "network_static": {
+      "ok": true,
+      "files": [
+        {
+          "path": "bundle/index.js",
+          "sha256": "0a19fe137c2b4f172f52aa5c5339473354ac8c3fdc0aab2a79be4c5a740764dc",
+          "forbidden_hits": []
+        },
+        {
+          "path": "bundle/client.js",
+          "sha256": "54e8679df0bc0e39e25bc9a3971ac192e5cf91155a43627138b9920a2913e7c5",
+          "forbidden_hits": []
+        },
+        {
+          "path": "src/host-rc5.mjs",
+          "sha256": "652c1b6c94410efffa988d7018dcc825da1ef0f7e8df4c42d3eca7dde9fca6b1",
+          "forbidden_hits": []
+        },
+        {
+          "path": "src/rpc.mjs",
+          "sha256": "ea7f6fad6f095c7dd9772d1ac61b968390fd44900383c8acf5def93f035c4714",
+          "forbidden_hits": []
+        },
+        {
+          "path": "src/access.mjs",
+          "sha256": "66e837f06ec6847263aeb76b34cf94a3a2809fabd1d3972058121aa814753a22",
+          "forbidden_hits": []
+        },
+        {
+          "path": "src/registry.mjs",
+          "sha256": "422ef2361d50437ab0cb879a05a9af2b14fd2a7150b337edaabeb405b7264cdd",
+          "forbidden_hits": []
+        },
+        {
+          "path": "src/actions.mjs",
+          "sha256": "b38581ff32fc2b6efed1d912de4ad4b154c2f0998af8a1187aa6cab6b096292a",
+          "forbidden_hits": []
+        },
+        {
+          "path": "src/events.mjs",
+          "sha256": "1bb56c89521cad9f42f8bc2ad396b95e970a5436bdf8a5a921c801945578efd5",
+          "forbidden_hits": []
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "Fixture modules are synthetic descriptors: composition success proves solver/transaction/RPC contracts, not 05/07 capability behavior.",
+    "The client bundle is checked statically here; browser render acceptance is a separate, not-yet-run layer.",
+    "Real Cordis mount evidence exists separately (evidence/host-rc5/host24.json) but still uses a local connection service double.",
+    "No OS-wide egress certification; only static source scans and the absence of network APIs in reviewed code are recorded."
+  ],
+  "source_lock_sha256": "2028f011706472a837938edccf13e5cd15cfa4b9d2e66e01ad7f6e5218df26a2",
+  "profile_revision": 1,
+  "composition_digest": "9d4be8a426c5885173c4b97d75e85180e0fcecb785200386a9d4f56e47ae1ce6",
+  "module_digests": {
+    "05": "e764039fc167ecd3ac380423a923d3154ab71637a4920997930e96dc03ac1e36",
+    "07": "28a367c835984e3d7659f3e40f9ba16a9958ccf9a6619c675893609a3108e776"
+  },
+  "fixture_modules": [
+    {
+      "id": "05",
+      "name": "Local Memory (fixture)",
+      "release_version": "0.0.0-fixture"
+    },
+    {
+      "id": "07",
+      "name": "Local Context (fixture)",
+      "release_version": "0.0.0-fixture"
+    }
+  ],
+  "layers": {
+    "static_contracts": true,
+    "fixture_catalog": true,
+    "fixture_compose": true,
+    "host_rpc_component": true,
+    "client_bundle_static": true,
+    "real_pinned_cordis_host": true,
+    "real_modules_05_07": false,
+    "full_profile_loader": false,
+    "client_browser_render": false,
+    "os_egress_certification": false
+  },
+  "blocked": {
+    "T5_real_05_07": {
+      "status": "blocked",
+      "reason_code": "NOT_READY",
+      "detail": "05 is in progress without a full-Host/UI release; 07 has no implemented release. Fixture success must not be reported as real capability availability."
+    },
+    "T6_followup_modules": {
+      "status": "blocked",
+      "reason_code": "NOT_READY",
+      "detail": "No verified releases for 06/03/04/02/01; interfaces and the compatibility matrix are prepared only."
+    },
+    "full_profile_loader_and_browser": {
+      "status": "pending",
+      "reason_code": "NEEDS_VERIFICATION",
+      "detail": "Stage-A smoke does not boot the profile loader or render the client bundle in the Harness browser."
+    }
+  },
+  "ok": true,
+  "exit_code": 0
+}

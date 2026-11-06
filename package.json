@@ -1,0 +1,58 @@
+{
+  "name": "@local/dsh-workbench-ui",
+  "version": "0.1.0-dev.1",
+  "private": true,
+  "type": "module",
+  "description": "Local workbench UI and module composition for DeepSeek Harness 0.2.1-rc.5; first version is fixture-only and does not claim 05/07 real capability",
+  "main": "bundle/index.js",
+  "exports": {
+    ".": "./bundle/index.js",
+    "./client": "./bundle/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "bundle/index.js",
+    "bundle/client.js",
+    "src",
+    "profile",
+    "vendor/semver/LICENSE",
+    "vendor/semver/index.js",
+    "vendor/semver/classes",
+    "vendor/semver/functions",
+    "vendor/semver/internal",
+    "vendor/semver/ranges",
+    "vendor/semver/preload.js",
+    "vendor/semver/package.json",
+    "cordis.patch.yml",
+    "ui"
+  ],
+  "engines": {
+    "node": ">=24.9.0",
+    "dsh": ">=0.2.1-rc.5 <0.2.2"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-renderer"
+      ],
+      "platform": "web"
+    },
+    "compatibility": {
+      "dshReleases": {
+        "0.2.1-rc.5": "compatible"
+      }
+    }
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "doctor": "node tools/doctor.mjs --isolated --host 0.2.1-rc.5",
+    "smoke": "node tools/smoke.mjs --isolated --fixture"
+  },
+  "license": "UNLICENSED"
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-07",
+  "started_at_utc": "2026-11-06T18:25:23.018Z",
+  "duration_ms": 242,
+  "purpose": "Real pinned rc.5 Context mounts/serves/disposes the workbench host plugin with a synthetic local connection double",
+  "host": {
+    "version": "0.2.1-rc.5",
+    "electron": "44.7.0",
+    "embedded_node": "24.21.0",
+    "build_commit": "d4db512a969fccf0c5cc7ec8fe38e9c1d27af916",
+    "app_asar_sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915",
+    "executable_sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+  },
+  "executable": {
+    "path": "E:/dsh/DeepSeek Harness.exe",
+    "sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+  },
+  "archive": {
+    "path": "E:/dsh/resources/app.asar",
+    "sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915"
+  },
+  "runtime": {
+    "node": "24.21.0",
+    "electron": "44.7.0",
+    "parent_node": "26.13.0"
+  },
+  "command": {
+    "executable": "E:/dsh/DeepSeek Harness.exe",
+    "args": [
+      "--test",
+      "--test-concurrency=1",
+      "--test-reporter=tap",
+      "--test-reporter-destination=E:\\dsh\\plugin\\08-workbench-ui\\evidence\\host-rc5\\host24.tap",
+      "tests/host-rpc.test.mjs"
+    ]
+  },
+  "isolated_home": "E:\\dsh\\plugin\\08-workbench-ui\\scratch\\host24-home",
+  "artifacts": [
+    {
+      "path": "bundle/index.js",
+      "sha256": "0a19fe137c2b4f172f52aa5c5339473354ac8c3fdc0aab2a79be4c5a740764dc"
+    },
+    {
+      "path": "src/host-rc5.mjs",
+      "sha256": "652c1b6c94410efffa988d7018dcc825da1ef0f7e8df4c42d3eca7dde9fca6b1"
+    },
+    {
+      "path": "src/rpc.mjs",
+      "sha256": "ea7f6fad6f095c7dd9772d1ac61b968390fd44900383c8acf5def93f035c4714"
+    },
+    {
+      "path": "src/access.mjs",
+      "sha256": "66e837f06ec6847263aeb76b34cf94a3a2809fabd1d3972058121aa814753a22"
+    },
+    {
+      "path": "src/registry.mjs",
+      "sha256": "422ef2361d50437ab0cb879a05a9af2b14fd2a7150b337edaabeb405b7264cdd"
+    },
+    {
+      "path": "src/actions.mjs",
+      "sha256": "b38581ff32fc2b6efed1d912de4ad4b154c2f0998af8a1187aa6cab6b096292a"
+    },
+    {
+      "path": "tests/host-rpc.test.mjs",
+      "sha256": "44c224ab2d1fe260306ac590ff81c2bdc63e66919d540ae5acccfe6cb508e7ae"
+    },
+    {
+      "path": "tools/test-rc5-host.mjs",
+      "sha256": "e1fae592386a16a1aeb62835a8d220d76d14bb67923fd00667a7e839678326fc"
+    }
+  ],
+  "source_lock_sha256": "2028f011706472a837938edccf13e5cd15cfa4b9d2e66e01ad7f6e5218df26a2",
+  "exit_code": 0,
+  "tap_summary": {
+    "tests": 2,
+    "pass": 2,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "tap_sha256": "e445d7669498bcdac93401a2b842123fbae4c7258fb419bc933a5b8b4084d0c7",
+  "verified": true,
+  "layering": {
+    "static_contracts": true,
+    "component_tests": true,
+    "real_pinned_host_runtime": true,
+    "full_profile_loader": false,
+    "client_browser_render": false,
+    "os_egress_certification": false
+  },
+  "limitations": [
+    "Uses a synthetic local connection service double; the real browser peer/transport is not exercised here.",
+    "No profile bundle install and no client browser boot; the UI render acceptance remains pending.",
+    "The embedded Node reports the real rc.5 Cordis version; a full profile-loaded runtime is still a separate layer."
+  ]
+}

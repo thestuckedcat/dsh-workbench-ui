@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "id": "07",
+  "name": "Local Context (fixture)",
+  "release_version": "0.0.0-fixture",
+  "artifact_ref": "fixture/07-local-context",
+  "sha256": "28a367c835984e3d7659f3e40f9ba16a9958ccf9a6619c675893609a3108e776",
+  "host": {
+    "verified_versions": [
+      "0.2.1-rc.5"
+    ],
+    "declared_range": "^0.2.1-rc.5",
+    "services": [
+      {
+        "name": "memory",
+        "shape_revision": "fixture-v1"
+      }
+    ]
+  },
+  "requires": [
+    {
+      "module_id": "05",
+      "contract_major": 1,
+      "optional": false
+    }
+  ],
+  "provides": {
+    "tools": [
+      {
+        "name": "context_observe",
+        "operation_kind": "read"
+      }
+    ],
+    "slots": [
+      {
+        "name": "main",
+        "key": "local-context",
+        "mode": "keyed"
+      }
+    ],
+    "writers": [],
+    "hooks": [
+      {
+        "name": "context.turn",
+        "mode": "observe"
+      }
+    ]
+  },
+  "network": {
+    "mode": "none",
+    "target_refs": [
+      "target/local-context"
+    ]
+  },
+  "dispose": {
+    "supports_quiesce": true,
+    "timeout_ms": 5000
+  },
+  "entry": {
+    "kind": "panel",
+    "ref": "panel/local-context"
+  },
+  "evidence": {
+    "release_ref": "fixture/07/release",
+    "contract_tests_ref": "fixture/07/contract-tests",
+    "host_smoke_ref": "fixture/07/host-smoke",
+    "network_ref": "fixture/07/network"
+  }
+}

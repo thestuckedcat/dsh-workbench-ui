@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-06T18:25:15.869Z",
+  "started_at": "2026-11-06T18:25:11.461Z",
+  "duration_ms": 4405,
+  "runtime": {
+    "executable": "E:\\dsh\\plugin\\08-workbench-ui\\runtime\\node.exe",
+    "node": "26.13.0",
+    "platform": "win32",
+    "arch": "x64"
+  },
+  "command": {
+    "executable": "E:\\dsh\\plugin\\08-workbench-ui\\runtime\\node.exe",
+    "args": [
+      "--test",
+      "--test-concurrency=1",
+      "--test-reporter=tap",
+      "--test-reporter-destination=E:\\dsh\\plugin\\08-workbench-ui\\evidence\\tests.tap",
+      "tests/actions.test.mjs",
+      "tests/client.test.mjs",
+      "tests/compat.test.mjs",
+      "tests/compose.test.mjs",
+      "tests/conflicts.test.mjs",
+      "tests/dispose.test.mjs",
+      "tests/host-rc5.test.mjs",
+      "tests/host-rpc.test.mjs",
+      "tests/network.test.mjs",
+      "tests/registry.test.mjs",
+      "tests/resolve.test.mjs",
+      "tests/rpc.test.mjs"
+    ]
+  },
+  "test_files": [
+    "tests/actions.test.mjs",
+    "tests/client.test.mjs",
+    "tests/compat.test.mjs",
+    "tests/compose.test.mjs",
+    "tests/conflicts.test.mjs",
+    "tests/dispose.test.mjs",
+    "tests/host-rc5.test.mjs",
+    "tests/host-rpc.test.mjs",
+    "tests/network.test.mjs",
+    "tests/registry.test.mjs",
+    "tests/resolve.test.mjs",
+    "tests/rpc.test.mjs"
+  ],
+  "exit_code": 0,
+  "summary": {
+    "tests": 151,
+    "pass": 149,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 2,
+    "todo": 0
+  },
+  "verified": true,
+  "source_lock": {
+    "sha256": "2028f011706472a837938edccf13e5cd15cfa4b9d2e66e01ad7f6e5218df26a2",
+    "host": {
+      "version": "0.2.1-rc.5",
+      "exe_sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4",
+      "asar_sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915",
+      "runtime": {
+        "executable": "runtime/electron-run-as-node",
+        "version": "24.21.0",
+        "sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+      }
+    },
+    "runtime": {
+      "path": "runtime/node.exe",
+      "version": "26.13.0",
+      "sha256": "14319838b3f355e0398c13569a90270bce4fc68f25189f58c59b03dadae0e6d5"
+    },
+    "artifacts": 78
+  },
+  "tap_sha256": "f4eff3787c12c55176ecff96dae9592cd8cee367de2be1cc38a514857de9c08c",
+  "notes": [
+    "tests/host-rpc.test.mjs skips under plain Node by design; it runs under the pinned Electron embedded Node 24.21.0 via tools/test-rc5-host.mjs (evidence/host-rc5/host24.json).",
+    "Component tests use the pinned runtime and synthetic fixtures/adapters only; no user profile, credentials or network are touched."
+  ]
+}

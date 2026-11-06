@@ -1,0 +1,11 @@
+# Keep reviewed bytes stable across platforms: source-lock hashes are computed
+# over LF content, so check out text files with LF on every OS.
+* text=auto eol=lf
+
+# Test evidence and fixtures are text; the Node runtime/scratch trees are ignored.
+*.tap text eol=lf
+*.json text eol=lf
+*.mjs text eol=lf
+*.js text eol=lf
+*.yml text eol=lf
+*.md text eol=lf

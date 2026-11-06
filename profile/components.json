@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "catalog_id": "local-workbench-fixtures",
+  "fixtures": true,
+  "description": "Local scratch catalog for T2/T3 fixture development. These are synthetic fixture manifests, NOT completed 05/07 releases: release/contract/smoke/network evidence refs stay under fixture/. No network, no database, no real module bytes.",
+  "limitations": [
+    "fixture-only: composition success proves solver/transaction rules, not that 05/07 capabilities work.",
+    "the sealed cordis.patch.yml revision records are deterministic composition projections, not loadable Cordis patches.",
+    "real modules must arrive with verified releases and be registered under real_modules, never mixed here."
+  ],
+  "modules": [
+    {
+      "schema_version": 1,
+      "id": "05",
+      "name": "Local Memory (fixture)",
+      "release_version": "0.0.0-fixture",
+      "artifact_ref": "fixture/05-local-memory",
+      "sha256": "e764039fc167ecd3ac380423a923d3154ab71637a4920997930e96dc03ac1e36",
+      "host": {
+        "verified_versions": ["0.2.1-rc.5"],
+        "declared_range": "^0.2.1-rc.5",
+        "services": []
+      },
+      "requires": [],
+      "provides": {
+        "tools": [
+          {"name": "memory_search", "operation_kind": "read"},
+          {"name": "memory_write", "operation_kind": "write"},
+          {"name": "memory_admin_panel", "operation_kind": "read"}
+        ],
+        "slots": [
+          {"name": "main", "key": "local-memory", "mode": "keyed"}
+        ],
+        "writers": [
+          {"resource": "memory/store", "scope": "global"}
+        ],
+        "hooks": [
+          {"name": "memory.turn", "mode": "observe"}
+        ]
+      },
+      "network": {"mode": "none", "target_refs": []},
+      "dispose": {"supports_quiesce": true, "timeout_ms": 5000},
+      "entry": {"kind": "panel", "ref": "panel/local-memory"},
+      "evidence": {
+        "release_ref": "fixture/05/release",
+        "contract_tests_ref": "fixture/05/contract-tests",
+        "host_smoke_ref": "fixture/05/host-smoke",
+        "network_ref": "fixture/05/network"
+      }
+    },
+    {
+      "schema_version": 1,
+      "id": "07",
+      "name": "Local Context (fixture)",
+      "release_version": "0.0.0-fixture",
+      "artifact_ref": "fixture/07-local-context",
+      "sha256": "28a367c835984e3d7659f3e40f9ba16a9958ccf9a6619c675893609a3108e776",
+      "host": {
+        "verified_versions": ["0.2.1-rc.5"],
+        "declared_range": "^0.2.1-rc.5",
+        "services": [
+          {"name": "memory", "shape_revision": "fixture-v1"}
+        ]
+      },
+      "requires": [
+        {"module_id": "05", "contract_major": 1, "optional": false}
+      ],
+      "provides": {
+        "tools": [
+          {"name": "context_observe", "operation_kind": "read"}
+        ],
+        "slots": [
+          {"name": "main", "key": "local-context", "mode": "keyed"}
+        ],
+        "writers": [],
+        "hooks": [
+          {"name": "context.turn", "mode": "observe"}
+        ]
+      },
+      "network": {"mode": "none", "target_refs": []},
+      "dispose": {"supports_quiesce": true, "timeout_ms": 5000},
+      "entry": {"kind": "panel", "ref": "panel/local-context"},
+      "evidence": {
+        "release_ref": "fixture/07/release",
+        "contract_tests_ref": "fixture/07/contract-tests",
+        "host_smoke_ref": "fixture/07/host-smoke",
+        "network_ref": "fixture/07/network"
+      }
+    }
+  ],
+  "real_modules": []
+}
