@@ -3,6 +3,8 @@
 > 08 能力：在已安装的 **DeepSeek Harness 0.2.1-rc.5** 内提供最小工作台——能力入口、非秘密状态聚合、组合诊断与可恢复的本地 profile 组合；不重写 Harness，不另做独立 Web 应用。
 >
 > 状态（2026-11-07）：**首版（stage A）实现并完成自测**。已实现合同/门禁、fixture 双模块组合与事务恢复、Host RPC、真实 rc.5 Cordis 运行时挂载、rc.5 原生 client 工作台与组件测试；**05/07 真实能力接入（T5）、完整 profile loader 装载与浏览器内真实渲染尚未验证**，见[兼容矩阵](docs/compatibility-matrix.md)§3 与[机制说明](docs/mechanisms.md)§8。
+>
+> 同步仓库：<https://github.com/thestuckedcat/dsh-workbench-ui>
 
 ## 交付内容
 
