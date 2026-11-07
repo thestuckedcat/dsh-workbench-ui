@@ -41,6 +41,7 @@ test('context.list works with the reserved bootstrap ref for owner peers only', 
   assert.equal(ok.data.contexts[0].context_ref, 'ctx-one');
   assert.equal(ok.data.contexts[0].profile_revision, 1);
   assert.equal(ok.data.contexts[0].label, 'Fixture project');
+  assert.equal(ok.data.contexts[0].active, true);
   assert.ok(Array.isArray(ok.data.diagnostics));
   assert.equal(ok.data.modules.length, 2);
   assert.deepEqual(ok.data.modules.map((module) => module.module_id), ['05', '07']);

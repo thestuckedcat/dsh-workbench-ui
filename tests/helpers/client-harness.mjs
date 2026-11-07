@@ -769,7 +769,7 @@ export function createRpc() {
       return rpc;
     },
     async call(channel, endpoint, payload, signal) {
-      const record = {channel, endpoint, payload, signal, at: calls.length};
+      const record = {channel, endpoint, rawEndpoint: endpoint, payload, signal, at: calls.length};
       calls.push(record);
       if (signal?.aborted) throw abortError();
       const raw = await invoke(endpoint, payload, signal, record);

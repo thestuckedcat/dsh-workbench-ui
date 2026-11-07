@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "date": "2026-11-07",
-  "started_at_utc": "2026-11-06T18:25:23.018Z",
-  "duration_ms": 242,
+  "started_at_utc": "2026-11-07T01:27:00.421Z",
+  "duration_ms": 252,
   "purpose": "Real pinned rc.5 Context mounts/serves/disposes the workbench host plugin with a synthetic local connection double",
   "host": {
     "version": "0.2.1-rc.5",
@@ -43,7 +43,7 @@
     },
     {
       "path": "src/host-rc5.mjs",
-      "sha256": "652c1b6c94410efffa988d7018dcc825da1ef0f7e8df4c42d3eca7dde9fca6b1"
+      "sha256": "a6c14f7857b5a5385ba20dac1450656af1b492712637302721099fee07707f05"
     },
     {
       "path": "src/rpc.mjs",
@@ -51,7 +51,7 @@
     },
     {
       "path": "src/access.mjs",
-      "sha256": "66e837f06ec6847263aeb76b34cf94a3a2809fabd1d3972058121aa814753a22"
+      "sha256": "b837da3cd77eb6336d92acfdc402b8aa2a79bead0450bac5ef9fe133a443f8cf"
     },
     {
       "path": "src/registry.mjs",
@@ -63,14 +63,14 @@
     },
     {
       "path": "tests/host-rpc.test.mjs",
-      "sha256": "44c224ab2d1fe260306ac590ff81c2bdc63e66919d540ae5acccfe6cb508e7ae"
+      "sha256": "c2a17337d96a670a9209d7ac5c2c3ceab3179b8cd7d0d2addb74a61c8dc4c578"
     },
     {
       "path": "tools/test-rc5-host.mjs",
       "sha256": "e1fae592386a16a1aeb62835a8d220d76d14bb67923fd00667a7e839678326fc"
     }
   ],
-  "source_lock_sha256": "2028f011706472a837938edccf13e5cd15cfa4b9d2e66e01ad7f6e5218df26a2",
+  "source_lock_sha256": "504ce7eed9cdb140cfafbe4ea938825edf59ef24b7280e5092a0173b4f6faf97",
   "exit_code": 0,
   "tap_summary": {
     "tests": 2,
@@ -80,7 +80,7 @@
     "skipped": 0,
     "todo": 0
   },
-  "tap_sha256": "e445d7669498bcdac93401a2b842123fbae4c7258fb419bc933a5b8b4084d0c7",
+  "tap_sha256": "a3a865146e86c1a792ce83b8c9d0d4af2cdae2ebb57aa49f4557c64bd8abf701",
   "verified": true,
   "layering": {
     "static_contracts": true,

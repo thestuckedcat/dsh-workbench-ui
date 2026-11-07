@@ -4,8 +4,8 @@
 
 ## 实施状态（2026-11-07 自测后回填）
 
-- **已实现并自测**：Task 1（版本/source-lock/doctor）、Task 2（fixture 双模块求解/冲突/事务/恢复/CLI）、Task 3 的 Host/client 组件框架（含真实 rc.5 Cordis 内嵌 Node 挂载测试、client bundle 组件测试、静态出口扫描）。
-- **未执行（明确未验证）**：Task 3 中“完整 profile loader 装载本 bundle”与“浏览器内真实渲染/键盘旅程”；真实 profile 安装。
+- **已实现并自测**：Task 1（版本/source-lock/doctor）、Task 2（fixture 双模块求解/冲突/事务/恢复/CLI）、Task 3 的 Host/client 框架（真实 rc.5 Cordis 内嵌 Node 挂载、HTTP RPC 承载、client bundle 组件测试、静态出口扫描），以及**隔离完整 profile loader 装载 + 真实 Chromium 渲染/返回聊天/重开**（fixture 阶段）。
+- **未执行（明确未验证）**：真实用户 profile 安装；完整键盘 Tab 旅程与窄/宽布局人工视觉走查；OS 出口认证。
 - **blocked**：真实 05/07 接入（05 未有完整 Host/UI release，07 未实现）；后续 06/03/04/02/01 接入无已验证 release。
 - 证据、命令与限制见[实施路线](docs/implementation-route.md)、[兼容矩阵](docs/compatibility-matrix.md)、[机制说明](docs/mechanisms.md)、`evidence/verification.json`。以下 2026-11-06 计划保留为历史任务分解，复盘以实施状态与证据为准。
 

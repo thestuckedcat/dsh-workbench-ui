@@ -7,7 +7,7 @@
 1. **T1 / UI-01 基线与供应链门槛。** 先为隔离真实rc.5准备只读证据：重算安装包SHA256、从app.asar解析并重算设计冻结的client/Host源码摘要、固定运行时；然后实现严格contracts、source-lock校验、版本/服务形状compat与`tools/doctor.mjs`。首个可验交付是`doctor`对rc.5放行、对未来alpha/未知导出/摘要不符明确拒绝。
 2. **T2 / UI-02 最小双模块装配。** 两个无网络fixture（05/07替身）证明依赖确定顺序、重复memory writer/同名工具/同key slot/独占hook/循环依赖全部blocked，observe可共存，未选模块不启用。
 3. **T3 / UI-03 scratch profile事务。** 只写本工具创建的scratch profile：revision、CAS preview、锁、journal、崩溃恢复、外部修改保留双方；重复相同组合no-op，失败回前一已验证组合。
-4. **T4 / UI-04,05 原Harness内工作台。** Host半在真实`ctx.connection.rpc.handle('/local-workbench', handler)`注册，client半以真实`window.__ModuleLoader__.load`格式注入`main` keyed slot与`sidebar.panellist`入口，通过真实`ctx.layout.selectPanel`打开/返回聊天；实现access/rpc/registry/actions/events、view epoch与取消。用fixture完整验证Host/client合同与卸载清理。
+4. **T4 / UI-04,05 原Harness内工作台。** Host半通过已审`webServer`前缀路由+`connection.admit`提供`/local-workbench/<endpoint>` HTTP RPC承载（运行验证后替换设计假定的`rpc.handle`，见兼容矩阵§4.2），client半以真实`window.__ModuleLoader__.load`格式注入`main` keyed slot与`sidebar.panellist`入口，通过真实`ctx.layout.selectPanel`打开/返回聊天；实现access/rpc/registry/actions/events、view epoch与取消。用fixture完整验证Host/client合同、隔离profile装载、浏览器渲染与卸载清理。
 5. **T5 / UI-06,07 真实05/07接入。** 只在05/07有独立验收release时执行；当前05未完成、07未实现，本任务**blocked**，不以fixture冒称真实能力可用，不跳过门禁。
 6. **T6 后续模块接入与T7 机制/发布。** T6按06→03→04→02→01逐项增量，当前无可接入真实release，保留接口与兼容矩阵；T7交付`docs/mechanisms.md`、`docs/restore.md`、验证记录并在已有授权内做隔离安装验证。
 
@@ -51,15 +51,16 @@
 
 | 步骤 | 结果 | 证据/命令 |
 |---|---|---|
-| T1 基线与门禁 | 完成。exe/asar 摘要与设计冻结值一致；9 个 rc.5 接缝文件 SHA 与源码探针通过；source-lock（77 artifacts）校验通过；未来 alpha/未知导出被拒绝 | `tools/doctor.mjs --isolated --host 0.2.1-rc.5` exit 0；`tests/compat.test.mjs` 13 项；`evidence/host-rc5/source-manifest.json` |
+| T1 基线与门禁 | 完成。exe/asar 摘要与设计冻结值一致；10 个 rc.5 接缝文件 SHA 与源码探针通过；source-lock（82 artifacts）校验通过；未来 alpha/未知导出被拒绝 | `tools/doctor.mjs --isolated --host 0.2.1-rc.5` exit 0；`tests/compat.test.mjs` 13 项；`evidence/host-rc5/source-manifest.json` |
 | T2 fixture 双模块装配 | 完成。依赖确定排序（05→07）、重复 writer/同名工具/同 key slot/独占 hook/循环依赖 blocked、observe 共存、未选不启用 | `tests/resolve.test.mjs` 18 + `tests/conflicts.test.mjs` 15，全通过 |
 | T3 scratch profile 事务 | 完成。stale revision 拒绝、重复 no-op、锁占用、切换崩溃恢复、外部修改保留双方、写失败保留旧 current、幂等冲突 | `tests/compose.test.mjs` 21；`tools/compose.mjs --fixture --out .\scratch\compose-smoke` exit 0（第二次 NO_CHANGE）；`tools/restore.mjs --dry-run` exit 0 |
-| T4 Host/client 工作台 | 完成组件层：Host RPC/registry/actions/access + 真实 rc.5 Cordis 内嵌 Node 挂载/调用/卸载 + client bundle 模拟 rc.5 环境 36 项行为测试（含 catalog 版本展示）+ 静态出口扫描 | `tests/registry.test.mjs` 8、`tests/actions.test.mjs` 7、`tests/rpc.test.mjs` 11、`tests/dispose.test.mjs` 5、`tests/network.test.mjs` 8、`tests/host-rc5.test.mjs` 12、`tests/client.test.mjs` 36；`tools/test-rc5-host.mjs` 2/2 pass |
-| T4 完整 profile loader/浏览器渲染 | **未执行**（未验证层） | 无证据；兼容矩阵 §3 标 ❌；需隔离 profile 安装 + 浏览器旅程 |
+| T4 Host/client 工作台 | 完成组件层：Host RPC/registry/actions/access/HTTP carrier + 真实 rc.5 Cordis 内嵌 Node 挂载/调用/卸载 + client bundle 模拟 rc.5 环境 36 项行为测试（含 catalog 版本展示）+ 静态出口扫描 | `tests/registry.test.mjs` 8、`tests/actions.test.mjs` 7、`tests/rpc.test.mjs` 11、`tests/http-rpc.test.mjs` 6、`tests/dispose.test.mjs` 5、`tests/network.test.mjs` 8、`tests/host-rc5.test.mjs` 12、`tests/client.test.mjs` 36；`tools/test-rc5-host.mjs` 2/2 pass |
+| T4 完整 profile loader/浏览器渲染 | **完成（隔离 fixture 阶段）**：隔离 `DSH_HOME`+`web` profile 真实加载 71 个 client 插件，含本 bundle；client 字节与评审一致；真实 Chromium 打开面板/返回聊天/重开并截图 | `tools/isolated-profile-verify.mjs`；`evidence/isolated-profile/verification.json`、`render.png`；宿主首次运行引导层可能遮挡截图（已记录限制） |
+| T4 RPC 承载修正（运行发现） | `rpc.handle`/`rpc.intercept` 在 rc.5 消费方 context 不可用；改用 `webServer` 前缀路由 + `connection.admit(req)` + 冻结信封；真实隔离启动验证通过 | `src/http-rpc.mjs`；`tests/http-rpc.test.mjs`；兼容矩阵 §4.2 |
 | T5 真实 05/07 | **blocked**：05 未完成完整 Host/UI release；07 未实现。未用 fixture 冒称真实能力 | `tools/smoke.mjs` 的 `blocked.T5_real_05_07`；catalog `real_modules: []` |
 | T6 后续模块 | **blocked**：无已验证 release；接口/兼容矩阵已备 | `tools/smoke.mjs` 的 `blocked.T6_followup_modules` |
-| T7 机制/发布 | 完成首版机制说明与恢复说明；真实安装/发布未执行 | `docs/mechanisms.md`、`docs/restore.md`、`evidence/verification.json` |
+| T7 机制/发布 | 完成首版机制说明与恢复说明；真实用户 profile 安装/发布未执行 | `docs/mechanisms.md`、`docs/restore.md`、`evidence/verification.json` |
 
-集成自测总计：普通 Node 26.13.0 运行 151 项测试（149 pass、2 项真实 Host 测试按设计跳过、0 fail；`evidence/tests.tap`/`evidence/test-summary.json`）；真实 rc.5 内嵌 Node 24.21.0 运行 2 项全通过（`evidence/host-rc5/host24.json`）；`tools/smoke.mjs --isolated --fixture --network-evidence` 的已实现层全部 true，未验证层显式为 false。详细逐层状态见[兼容矩阵](compatibility-matrix.md)。
+集成自测总计：普通 Node 26.13.0 运行 157 项测试（155 pass、2 项真实 Host 测试按设计跳过、0 fail；`evidence/tests.tap`/`evidence/test-summary.json`）；真实 rc.5 内嵌 Node 24.21.0 运行 2 项全通过（`evidence/host-rc5/host24.json`）；隔离 profile loader/浏览器渲染验证通过（`evidence/isolated-profile/verification.json`）；`tools/smoke.mjs --isolated --fixture --network-evidence` 的已实现层全部 true，未验证层（真实 05/07、OS 出口认证）显式为 false。详细逐层状态见[兼容矩阵](compatibility-matrix.md)。
 
 以上偏差与新增字段均记入[兼容矩阵](compatibility-matrix.md)第 4 节；任何后续 Host 版本/接口变化必须按 WB-DOC-01 重跑受影响层并更新证据。

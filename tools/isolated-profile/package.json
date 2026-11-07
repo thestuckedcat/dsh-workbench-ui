@@ -1,0 +1,7 @@
+{
+  "name": "dsh-workbench-isolated-render-probe",
+  "version": "0.0.0-private",
+  "private": true,
+  "description": "Render probe run by tools/isolated-profile-verify.mjs; not a shipped component",
+  "main": "electron-probe.cjs"
+}

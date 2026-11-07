@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-06T18:25:23.564Z",
+  "generated_at": "2026-11-07T01:27:32.845Z",
   "mode": "isolated",
   "fixture": true,
   "fixture_mode": true,
@@ -114,7 +114,7 @@
         },
         {
           "path": "src/host-rc5.mjs",
-          "sha256": "652c1b6c94410efffa988d7018dcc825da1ef0f7e8df4c42d3eca7dde9fca6b1",
+          "sha256": "a6c14f7857b5a5385ba20dac1450656af1b492712637302721099fee07707f05",
           "forbidden_hits": []
         },
         {
@@ -124,7 +124,7 @@
         },
         {
           "path": "src/access.mjs",
-          "sha256": "66e837f06ec6847263aeb76b34cf94a3a2809fabd1d3972058121aa814753a22",
+          "sha256": "b837da3cd77eb6336d92acfdc402b8aa2a79bead0450bac5ef9fe133a443f8cf",
           "forbidden_hits": []
         },
         {
@@ -143,15 +143,25 @@
           "forbidden_hits": []
         }
       ]
+    },
+    "isolated_profile": {
+      "ok": true,
+      "layers": {
+        "gates": true,
+        "isolated_profile_prepared": true,
+        "full_profile_loader": true,
+        "client_browser_render": true
+      },
+      "error": null
     }
   },
   "limitations": [
-    "Fixture modules are synthetic descriptors: composition success proves solver/transaction/RPC contracts, not 05/07 capability behavior.",
-    "The client bundle is checked statically here; browser render acceptance is a separate, not-yet-run layer.",
-    "Real Cordis mount evidence exists separately (evidence/host-rc5/host24.json) but still uses a local connection service double.",
+    "Fixture modules are synthetic descriptors: composition success proves solver/transaction/RPC/render contracts, not 05/07 capability behavior.",
+    "The full profile loader and browser render layer is recorded separately in evidence/isolated-profile/verification.json (fixture stage only).",
+    "Real Cordis mount evidence exists separately (evidence/host-rc5/host24.json) and uses a local Host-services double.",
     "No OS-wide egress certification; only static source scans and the absence of network APIs in reviewed code are recorded."
   ],
-  "source_lock_sha256": "2028f011706472a837938edccf13e5cd15cfa4b9d2e66e01ad7f6e5218df26a2",
+  "source_lock_sha256": "504ce7eed9cdb140cfafbe4ea938825edf59ef24b7280e5092a0173b4f6faf97",
   "profile_revision": 1,
   "composition_digest": "9d4be8a426c5885173c4b97d75e85180e0fcecb785200386a9d4f56e47ae1ce6",
   "module_digests": {
@@ -177,9 +187,10 @@
     "host_rpc_component": true,
     "client_bundle_static": true,
     "real_pinned_cordis_host": true,
+    "isolated_profile": true,
+    "full_profile_loader": true,
+    "client_browser_render": true,
     "real_modules_05_07": false,
-    "full_profile_loader": false,
-    "client_browser_render": false,
     "os_egress_certification": false
   },
   "blocked": {
@@ -193,10 +204,10 @@
       "reason_code": "NOT_READY",
       "detail": "No verified releases for 06/03/04/02/01; interfaces and the compatibility matrix are prepared only."
     },
-    "full_profile_loader_and_browser": {
+    "os_egress_certification": {
       "status": "pending",
       "reason_code": "NEEDS_VERIFICATION",
-      "detail": "Stage-A smoke does not boot the profile loader or render the client bundle in the Harness browser."
+      "detail": "Only static source scans are recorded; no OS-wide egress certification has been performed."
     }
   },
   "ok": true,

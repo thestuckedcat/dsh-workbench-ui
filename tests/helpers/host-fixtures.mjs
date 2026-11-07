@@ -112,34 +112,105 @@ export function rpcRequest(context, input = {}, overrides = {}) {
   };
 }
 
-/** Minimal connection service double: records handlers and lets tests invoke them. */
-export function createRecordingConnection() {
-  const handlers = new Map();
+/**
+ * Minimal Host services double for the workbench HTTP carrier:
+ * `connection.admit` (fixed owner peer) + `webServer.register` (captured routes).
+ */
+export function createRecordingConnection({peer = ownerPeer(), channel = '/local-workbench'} = {}) {
+  const routes = new Map();
+  const connection = {
+    admit(req) {
+      return {peer: req?.testPeer ?? peer};
+    },
+  };
+  const webServer = {
+    register(route) {
+      if (routes.has(route.path)) throw new Error(`duplicate webServer route ${route.path}`);
+      routes.set(route.path, route);
+      return () => {
+        routes.delete(route.path);
+      };
+    },
+  };
   const service = {
-    rpc: {
-      handle(channel, handler) {
-        if (handlers.has(channel)) throw new Error(`duplicate channel ${channel}`);
-        handlers.set(channel, handler);
-        return () => {
-          handlers.delete(channel);
-        };
-      },
+    connection,
+    webServer,
+    routes,
+    get(routePath = channel) {
+      return routes.get(routePath);
     },
-    handlers,
-    get(channel) {
-      return handlers.get(channel);
-    },
-    async call(channel, endpoint, payload, signal, peer = ownerPeer()) {
-      const handler = handlers.get(channel);
-      if (handler === undefined) throw new Error(`no handler for ${channel}`);
-      return {ok: true, value: await handler(endpoint, payload, signal, peer)};
+    async call(endpoint, payload, signal, peerOverride) {
+      const route = routes.get(channel);
+      if (route === undefined) throw new Error(`no route registered for ${channel}`);
+      if (peerOverride !== undefined) {
+        connection.admit = () => ({peer: peerOverride});
+      }
+      const response = await invokeHttpRoute(route, {channel, endpoint, payload, signal});
+      return response;
     },
   };
   return service;
 }
 
+/** Build a fake node:http request accepted by the workbench carrier. */
+export function createFakeHttpRequest({channel = '/local-workbench', endpoint = 'status.get', payload = {}, rpcId = 'test-rpc-1', peer} = {}) {
+  const body = JSON.stringify({type: 'client-request', rpcId, method: endpoint, payload});
+  return {
+    method: 'POST',
+    url: `${channel}/${endpoint}`,
+    headers: {'content-type': 'application/json'},
+    testPeer: peer,
+    on() {
+      return this;
+    },
+    async *[Symbol.asyncIterator]() {
+      yield Buffer.from(body, 'utf8');
+    },
+  };
+}
+
+/** Build a fake node:http response that captures status/body. */
+export function createFakeHttpResponse() {
+  return {
+    statusCode: null,
+    headers: {},
+    body: '',
+    finished: false,
+    writeHead(status, headers = {}) {
+      this.statusCode = status;
+      this.headers = headers;
+      return this;
+    },
+    end(chunk = '') {
+      this.body += Buffer.isBuffer(chunk) ? chunk.toString('utf8') : String(chunk);
+      this.finished = true;
+      return this;
+    },
+  };
+}
+
+/**
+ * Invoke a captured webServer route like the real Host would, returning the
+ * RpcResult `{ok,value}|{ok,error}` that the browser client would receive.
+ */
+export async function invokeHttpRoute(route, {channel = '/local-workbench', endpoint, payload, rpcId = 'test-rpc-1', peer} = {}) {
+  const req = createFakeHttpRequest({channel, endpoint, payload, rpcId, peer});
+  const res = createFakeHttpResponse();
+  await route.handler(req, res, peer);
+  let parsed;
+  try {
+    parsed = JSON.parse(res.body);
+  } catch {
+    throw new Error(`route did not return JSON (status ${res.statusCode}): ${res.body.slice(0, 200)}`);
+  }
+  if (parsed.type !== 'server-response' || parsed.rpcId !== rpcId) {
+    throw new Error(`invalid server-response envelope: ${JSON.stringify(parsed).slice(0, 200)}`);
+  }
+  return parsed.result;
+}
+
 /** Minimal Cordis-like context for the host plugin (plain-Node component tests). */
-export function createFakeCtx({dshHome, connection, logger = console} = {}) {
+export function createFakeCtx({dshHome, connection, webServer, logger = console} = {}) {
   const services = new Map();
   const effects = [];
   const provided = new Map();
@@ -177,9 +248,10 @@ export function createFakeCtx({dshHome, connection, logger = console} = {}) {
     },
   };
   if (connection !== undefined) services.set('connection', connection);
+  if (webServer !== undefined) services.set('webServer', webServer);
   // Cordis exposes provided services as context properties; mirror that for
-  // `ctx.connection.rpc.handle(...)` in the host plugin.
-  for (const name of ['connection', 'localWorkbench']) {
+  // `ctx.connection` / `ctx.webServer` in the host plugin.
+  for (const name of ['connection', 'webServer', 'localWorkbench']) {
     Object.defineProperty(ctx, name, {
       configurable: true,
       get() {

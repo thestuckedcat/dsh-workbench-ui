@@ -240,6 +240,12 @@ async function runSmoke(options) {
     report.checks.network_static = {ok: scan.every((row) => row.forbidden_hits.length === 0), files: scan};
   }
 
+  const isolated = readJsonIfExists(join(ROOT, 'evidence', 'isolated-profile', 'verification.json'));
+  report.checks.isolated_profile = {
+    ok: isolated?.verified === true,
+    layers: isolated?.layers ?? null,
+    error: isolated?.error ?? null,
+  };
   const layers = {
     static_contracts: report.checks.source_lock?.ok === true,
     fixture_catalog: report.checks.fixture_catalog?.ok === true,
@@ -247,9 +253,10 @@ async function runSmoke(options) {
     host_rpc_component: report.checks.host_rpc_component?.ok === true,
     client_bundle_static: report.checks.client_bundle_static?.ok === true,
     real_pinned_cordis_host: readJsonIfExists(join(ROOT, 'evidence', 'host-rc5', 'host24.json'))?.verified === true,
+    isolated_profile: isolated?.verified === true,
+    full_profile_loader: isolated?.layers?.full_profile_loader === true,
+    client_browser_render: isolated?.layers?.client_browser_render === true,
     real_modules_05_07: false,
-    full_profile_loader: false,
-    client_browser_render: false,
     os_egress_certification: false,
   };
   report.layers = layers;
@@ -260,15 +267,15 @@ async function runSmoke(options) {
       detail: '05 is in progress without a full-Host/UI release; 07 has no implemented release. Fixture success must not be reported as real capability availability.',
     },
     T6_followup_modules: {status: 'blocked', reason_code: 'NOT_READY', detail: 'No verified releases for 06/03/04/02/01; interfaces and the compatibility matrix are prepared only.'},
-    full_profile_loader_and_browser: {status: 'pending', reason_code: 'NEEDS_VERIFICATION', detail: 'Stage-A smoke does not boot the profile loader or render the client bundle in the Harness browser.'},
+    os_egress_certification: {status: 'pending', reason_code: 'NEEDS_VERIFICATION', detail: 'Only static source scans are recorded; no OS-wide egress certification has been performed.'},
   };
   report.limitations = [
-    'Fixture modules are synthetic descriptors: composition success proves solver/transaction/RPC contracts, not 05/07 capability behavior.',
-    'The client bundle is checked statically here; browser render acceptance is a separate, not-yet-run layer.',
-    'Real Cordis mount evidence exists separately (evidence/host-rc5/host24.json) but still uses a local connection service double.',
+    'Fixture modules are synthetic descriptors: composition success proves solver/transaction/RPC/render contracts, not 05/07 capability behavior.',
+    'The full profile loader and browser render layer is recorded separately in evidence/isolated-profile/verification.json (fixture stage only).',
+    'Real Cordis mount evidence exists separately (evidence/host-rc5/host24.json) and uses a local Host-services double.',
     'No OS-wide egress certification; only static source scans and the absence of network APIs in reviewed code are recorded.',
   ];
-  const required = ['source_lock', 'fixture_catalog', 'fixture_compose', 'host_rpc_component', 'client_bundle_static'];
+  const required = ['source_lock', 'fixture_catalog', 'fixture_compose', 'host_rpc_component', 'client_bundle_static', 'isolated_profile'];
   report.ok = required.every((key) => report.checks[key]?.ok === true);
   report.exit_code = report.ok ? 0 : 1;
   writeEvidence(report);

@@ -1,10 +1,12 @@
 // rc.5 Host adapter: local config, fixture descriptors, service registration.
 //
 // This module binds the workbench to the pinned Host through the reviewed
-// `ctx.connection.rpc.handle` seam. It never reads credentials, never starts a
-// network client, and never treats a client receipt as business success. The
-// first version only registers local, explicitly-fixture modules; 05/07 real
-// releases remain a T5 gate.
+// webServer route registry plus the connection service's admission (the
+// `rpc.handle`/`rpc.intercept` seams are unusable from a consumer context in
+// rc.5; see src/http-rpc.mjs for the verified failure and carrier). It never
+// reads credentials, never starts a network client, and never treats a client
+// receipt as business success. The first version only registers local,
+// explicitly-fixture modules; 05/07 real releases remain a T5 gate.
 import {existsSync, readFileSync} from 'node:fs';
 import {isAbsolute, join, resolve, sep} from 'node:path';
 import {
@@ -22,6 +24,7 @@ import {
   validateModuleStatusV1,
 } from './contracts.mjs';
 import {createAccessRegistry, isOwnerPeer, validateAccessRegistryInput, validateContextDisplay} from './access.mjs';
+import {registerWorkbenchHttpRoute} from './http-rpc.mjs';
 import {createRegistry} from './registry.mjs';
 import {createActionService} from './actions.mjs';
 import {createRpcHandler} from './rpc.mjs';
@@ -399,14 +402,14 @@ export function createBlockedRuntime({reason = 'CONFIG_MISSING'} = {}) {
 }
 
 /**
- * Create the Cordis plugin object used by bundle/index.js. The `connection`
- * service must be present; registration is effect-scoped by the connection
- * service itself, and the runtime is disposed with the plugin fiber.
+ * Create the Cordis plugin object used by bundle/index.js. The `connection` and
+ * `webServer` services must be present; the route is effect-scoped by the
+ * caller fiber and the runtime is disposed with it.
  */
 export function createHostPlugin({env = process.env, loadRuntime = createHostRuntime, dynamicCompose} = {}) {
   return {
     name: 'local-workbench',
-    inject: ['connection'],
+    inject: ['connection', 'webServer'],
     async apply(ctx) {
       const dshHome = resolveDshHome(ctx, env);
       const loaded = loadWorkbenchConfig({dshHome, env});
@@ -422,18 +425,25 @@ export function createHostPlugin({env = process.env, loadRuntime = createHostRun
         runtime = await loadRuntime({config: loaded.config, dshHome, compose, compositionDigest: compose?.composition_digest});
         service = runtime.createServiceHandle();
       }
-      const registration = ctx.connection.rpc.handle('/local-workbench', async (endpoint, payload, signal, peer) => {
-        if (runtime === undefined) {
-          return {
-            schema_version: 1,
-            operation_id: typeof payload?.operation_id === 'string' ? payload.operation_id : 'invalid-request',
-            view_epoch: Number.isSafeInteger(payload?.view_epoch) ? payload.view_epoch : 0,
-            scope_generation: 1,
-            status: 'unavailable',
-            reason_code: service.blocked_reason === 'CONFIG_MISSING' ? 'PROFILE_NOT_FOUND' : service.blocked_reason,
-          };
-        }
-        return runtime.handler(endpoint, payload, signal, peer);
+      // rc.5's `rpc.handle`/`rpc.intercept` cannot be used from a consumer
+      // context (verified: webServer inject error; /api interceptor single
+      // owner). The carrier below reuses `connection.admit` for the Host/Origin
+      // and browser-session fence, then speaks the frozen client-request /
+      // server-response envelope on our own webServer prefix route.
+      const registration = registerWorkbenchHttpRoute(ctx, {
+        handler: async (endpoint, payload, signal, peer) => {
+          if (runtime === undefined) {
+            return {
+              schema_version: 1,
+              operation_id: typeof payload?.operation_id === 'string' ? payload.operation_id : 'invalid-request',
+              view_epoch: Number.isSafeInteger(payload?.view_epoch) ? payload.view_epoch : 0,
+              scope_generation: 1,
+              status: 'unavailable',
+              reason_code: service.blocked_reason === 'CONFIG_MISSING' ? 'PROFILE_NOT_FOUND' : service.blocked_reason,
+            };
+          }
+          return runtime.handler(endpoint, payload, signal, peer);
+        },
       });
       ctx.provide('localWorkbench', {
         schema_version: service.schema_version,
@@ -457,8 +467,8 @@ export function createHostPlugin({env = process.env, loadRuntime = createHostRun
       ctx.effect(() => () => {
         if (typeof registration === 'function') registration();
         runtime?.dispose();
-      }, 'local-workbench: rpc and runtime');
-      ctx.logger?.info?.('local-workbench: workbench RPC channel registered');
+      }, 'local-workbench: http rpc route and runtime');
+      ctx.logger?.info?.('local-workbench: workbench HTTP RPC route registered');
     },
   };
 }

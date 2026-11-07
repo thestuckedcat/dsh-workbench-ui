@@ -1,0 +1,347 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-07T01:27:05.598Z",
+  "purpose": "Full isolated rc.5 profile loader + real Chromium render acceptance for the fixture-stage workbench (T4 final layer)",
+  "host": {
+    "version": "0.2.1-rc.5",
+    "electron": "44.7.0",
+    "embedded_node": "24.21.0",
+    "build_commit": "d4db512a969fccf0c5cc7ec8fe38e9c1d27af916",
+    "app_asar_sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915",
+    "executable_sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+  },
+  "isolated_home": "E:\\dsh\\plugin\\08-workbench-ui\\scratch\\isolated-profile",
+  "layers": {
+    "gates": true,
+    "isolated_profile_prepared": true,
+    "full_profile_loader": true,
+    "client_browser_render": true
+  },
+  "checks": {
+    "boot_graph": {
+      "index_status": 200,
+      "html_bytes": 38279,
+      "boot_rev": "b2e63630bb9c",
+      "release": {
+        "version": "0.2.1-rc.5",
+        "commit": "d4db512"
+      },
+      "plugin_count": 71,
+      "workbench_entry": {
+        "id": "@local/dsh-workbench-ui",
+        "url": "plugins/??@local/dsh-workbench-ui/client.js&rev=c7ea5e010557",
+        "rev": "c7ea5e010557",
+        "inject": [
+          "@deepseek-ai/dsh-client-connection",
+          "@deepseek-ai/dsh-client-locale",
+          "@deepseek-ai/dsh-client-ui-layout",
+          "@deepseek-ai/dsh-client-ui-renderer"
+        ]
+      },
+      "client": {
+        "url": "http://127.0.0.1:2716/plugins/??@local/dsh-workbench-ui/client.js&rev=c7ea5e010557",
+        "status": 200,
+        "bytes": 66652,
+        "sha256": "453ab7d7c9fcd03cf9770dedb4926189bea47aa2c3ed8999e4c4a306e3f1bc99",
+        "loader_id": true,
+        "loader_facade": true
+      },
+      "stderr": ""
+    },
+    "render": {
+      "ok": true,
+      "steps": {
+        "pageLoaded": true,
+        "sidebarEntry": true,
+        "firstRunNoticeDismissed": true,
+        "panelReady": true,
+        "returnToChat": true,
+        "chatRestored": true,
+        "panelReopened": true,
+        "noticeDismissedBeforeCapture": false
+      },
+      "panel": {
+        "fixture_banner": true,
+        "cards": [
+          "Local Memory (fixture)\n可用\n\n05 · Local Memory (fixture) (fixture) · 0.0.0-fixture\n\n更新于 2026-11-07 09:27:11\n\n进入Local Memory (fixture)",
+          "Local Memory (fixture)\n可用",
+          "Local Memory (fixture)",
+          "进入Local Memory (fixture)",
+          "Local Context (fixture)\n可用\n\n07 · Local Context (fixture) (fixture) · 0.0.0-fixture\n\n更新于 2026-11-07 09:27:11\n\n进入Local Context (fixture)",
+          "Local Context (fixture)\n可用",
+          "Local Context (fixture)",
+          "进入Local Context (fixture)"
+        ],
+        "return_button": true,
+        "workbench_titles": [
+          "本地工作台"
+        ],
+        "aria_live_regions": 1,
+        "error_summary": [],
+        "host_onboarding_visible_at_capture": true,
+        "host_preview_notice_visible_at_capture": false
+      },
+      "console_lines": [],
+      "screenshot": "evidence/isolated-profile/render.png",
+      "probe_log": "\r\n(electron) 'console-message' arguments are deprecated and will be removed. Please use Event<WebContentsConsoleMessageEventParams> object instead.\n",
+      "stderr": ""
+    }
+  },
+  "limitations": [
+    "Fixture-only stage A: proves loader/composition/RPC/render contracts, not 05/07 real capability behavior.",
+    "No OS-wide egress certification was performed; only static scans and the absence of network APIs in reviewed code are recorded by tools/smoke.mjs.",
+    "Uses the locally installed generic Electron binary as the Chromium host for rendering; it is a test instrument, not a shipped dependency.",
+    "The isolated fresh DSH_HOME may show the product's own first-run preview/login onboarding overlay in the screenshot; the workbench DOM assertions are recorded independently of that host overlay."
+  ],
+  "gates": {
+    "digests": {
+      "ok": true,
+      "host": {
+        "version": "0.2.1-rc.5",
+        "electron": "44.7.0",
+        "embedded_node": "24.21.0",
+        "build_commit": "d4db512a969fccf0c5cc7ec8fe38e9c1d27af916",
+        "app_asar_sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915",
+        "executable_sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+      },
+      "archive": {
+        "path": "E:/dsh/resources/app.asar",
+        "sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915"
+      },
+      "executable": {
+        "path": "E:/dsh/DeepSeek Harness.exe",
+        "sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+      },
+      "failures": []
+    },
+    "seams": {
+      "ok": true,
+      "host": {
+        "version": "0.2.1-rc.5",
+        "electron": "44.7.0",
+        "embedded_node": "24.21.0",
+        "build_commit": "d4db512a969fccf0c5cc7ec8fe38e9c1d27af916",
+        "app_asar_sha256": "e1b6f25fa937da98086c3e77af77aa14791105963c4d337a1c42179d232c6915",
+        "executable_sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4"
+      },
+      "files": [
+        {
+          "path": "dsh/node_modules/@deepseek-ai/dsh-client-modules/lib/client.js",
+          "expected_sha256": "426084f8672c26a469566a3f43c91a9b0d1dd73d0834028e553a6d0fa9cffa44",
+          "actual_sha256": "426084f8672c26a469566a3f43c91a9b0d1dd73d0834028e553a6d0fa9cffa44",
+          "size": 46292,
+          "hash_ok": true,
+          "probes": [
+            {
+              "label": "module loader registration facade",
+              "ok": true
+            },
+            {
+              "label": "factory receive require",
+              "ok": true
+            }
+          ]
+        },
+        {
+          "path": "dsh/node_modules/@deepseek-ai/dsh-client-modules/lib/index.js",
+          "expected_sha256": "a2a33e32f13fdc9598b4751c4c22fb72789190bf5ba7337cd5a3d0cb4b4417ec",
+          "actual_sha256": "a2a33e32f13fdc9598b4751c4c22fb72789190bf5ba7337cd5a3d0cb4b4417ec",
+          "size": 42376,
+          "hash_ok": true,
+          "probes": [
+            {
+              "label": "dsh.client scanner",
+              "ok": true
+            },
+            {
+              "label": "boot graph wire",
+              "ok": true
+            }
+          ]
+        },
+        {
+          "path": "dsh/node_modules/@deepseek-ai/dsh-client-ui-layout/lib/client.js",
+          "expected_sha256": "eb011a7b5699fac7f3ad0aa15408f46a6cf47f79b8cc15db1f81739e81e70587",
+          "actual_sha256": "eb011a7b5699fac7f3ad0aa15408f46a6cf47f79b8cc15db1f81739e81e70587",
+          "size": 32834,
+          "hash_ok": true,
+          "probes": [
+            {
+              "label": "selectPanel service",
+              "ok": true
+            },
+            {
+              "label": "main keyed slot",
+              "ok": true
+            },
+            {
+              "label": "hasMainPanel key check",
+              "ok": true
+            }
+          ]
+        },
+        {
+          "path": "dsh/node_modules/@deepseek-ai/dsh-client-ui-renderer/lib/client.js",
+          "expected_sha256": "dbdb3f26bfbc1d143bc8a0eed5982a2507c4f0cf8027e7c170f3bed3604be356",
+          "actual_sha256": "dbdb3f26bfbc1d143bc8a0eed5982a2507c4f0cf8027e7c170f3bed3604be356",
+          "size": 78299,
+          "hash_ok": true,
+          "probes": [
+            {
+              "label": "slots.register",
+              "ok": true
+            },
+            {
+              "label": "slot renderer install",
+              "ok": true
+            }
+          ]
+        },
+        {
+          "path": "dsh/node_modules/@deepseek-ai/dsh-client-ui-sidebar/lib/client.js",
+          "expected_sha256": "f5cd3c44c4d2f42d017bc3f133758a54af2f0fcafce7173a983045c1f2976a4b",
+          "actual_sha256": "f5cd3c44c4d2f42d017bc3f133758a54af2f0fcafce7173a983045c1f2976a4b",
+          "size": 36895,
+          "hash_ok": true,
+          "probes": [
+            {
+              "label": "panellist slot",
+              "ok": true
+            },
+            {
+              "label": "row click selectPanel",
+              "ok": true
+            }
+          ]
+        },
+        {
+          "path": "dsh/node_modules/@deepseek-ai/dsh-client-connection/lib/index.js",
+          "expected_sha256": "0ebcca7583e082716f79b0b55bc1749d48269cc8db2989b043b321b57abd3684",
+          "actual_sha256": "0ebcca7583e082716f79b0b55bc1749d48269cc8db2989b043b321b57abd3684",
+          "size": 44434,
+          "hash_ok": true,
+          "probes": [
+            {
+              "label": "rpc.handle",
+              "ok": true
+            },
+            {
+              "label": "rpc.intercept",
+              "ok": true
+            },
+            {
+              "label": "connection admit",
+              "ok": true
+            },
+            {
+              "label": "handler signature",
+              "ok": true
+            },
+            {
+              "label": "owner principal",
+              "ok": true
+            },
+            {
+              "label": "server response schema",
+              "ok": true
+            }
+          ]
+        },
+        {
+          "path": "dsh/node_modules/@deepseek-ai/dsh-host-webserver/lib/index.js",
+          "expected_sha256": "08907285802f0edd3aeb68c91fb443be2804879ab3d41104c4600424be06f3ab",
+          "actual_sha256": "08907285802f0edd3aeb68c91fb443be2804879ab3d41104c4600424be06f3ab",
+          "size": 21436,
+          "hash_ok": true,
+          "probes": [
+            {
+              "label": "route registry register",
+              "ok": true
+            },
+            {
+              "label": "prefix route table",
+              "ok": true
+            },
+            {
+              "label": "duplicate route rejection",
+              "ok": true
+            }
+          ]
+        },
+        {
+          "path": "dsh/node_modules/@deepseek-ai/dsh-client-connection/lib/client.browser.js",
+          "expected_sha256": "dfc3544eb894c74b340a4c4c63a8c125fd2e983df9efed5885712574af994e62",
+          "actual_sha256": "dfc3544eb894c74b340a4c4c63a8c125fd2e983df9efed5885712574af994e62",
+          "size": 60601,
+          "hash_ok": true,
+          "probes": [
+            {
+              "label": "browser connection provide",
+              "ok": true
+            },
+            {
+              "label": "rpc.call signature",
+              "ok": true
+            }
+          ]
+        },
+        {
+          "path": "dsh/node_modules/@deepseek-ai/dsh-app-boot/lib/index.js",
+          "expected_sha256": "5135179ac810e4f626f32ec3bdc3293dc7d2028e8aa92e5e0c006f1a33b78e76",
+          "actual_sha256": "5135179ac810e4f626f32ec3bdc3293dc7d2028e8aa92e5e0c006f1a33b78e76",
+          "size": 203572,
+          "hash_ok": true,
+          "probes": [
+            {
+              "label": "bundle patch resolution",
+              "ok": true
+            }
+          ]
+        },
+        {
+          "path": "dsh/node_modules/@deepseek-ai/dsh-web-app/lib/index.js",
+          "expected_sha256": "6662ca712368c56fb8818efa53039ef92ce215a328a76b9cdd5e1bed624a0e84",
+          "actual_sha256": "6662ca712368c56fb8818efa53039ef92ce215a328a76b9cdd5e1bed624a0e84",
+          "size": 7844,
+          "hash_ok": true,
+          "probes": [
+            {
+              "label": "web app runtime glue",
+              "ok": true
+            }
+          ]
+        }
+      ],
+      "failures": []
+    },
+    "lock_sha256": "504ce7eed9cdb140cfafbe4ea938825edf59ef24b7280e5092a0173b4f6faf97"
+  },
+  "profile": {
+    "profile_id": "local-workbench-fixtures",
+    "revision": 1,
+    "composition_digest": "9d4be8a426c5885173c4b97d75e85180e0fcecb785200386a9d4f56e47ae1ce6",
+    "status": "active"
+  },
+  "bundles": [
+    "@deepseek-ai/dsh-base",
+    "@deepseek-ai/dsh-web-app",
+    "@local/dsh-workbench-ui"
+  ],
+  "workbench_modules": [
+    {
+      "id": "05",
+      "name": "Local Memory (fixture)",
+      "release_version": "0.0.0-fixture",
+      "sha256": "e764039fc167ecd3ac380423a923d3154ab71637a4920997930e96dc03ac1e36"
+    },
+    {
+      "id": "07",
+      "name": "Local Context (fixture)",
+      "release_version": "0.0.0-fixture",
+      "sha256": "28a367c835984e3d7659f3e40f9ba16a9958ccf9a6619c675893609a3108e776"
+    }
+  ],
+  "ok": true,
+  "verified": true,
+  "exit_code": 0
+}

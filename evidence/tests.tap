@@ -2,920 +2,956 @@ TAP version 13
 # Subtest: prepareNavigation accepts a matching panel intent and never claims it was opened
 ok 1 - prepareNavigation accepts a matching panel intent and never claims it was opened
   ---
-  duration_ms: 2.2446
+  duration_ms: 2.1816
   type: 'test'
   ...
 # Subtest: prepareNavigation denies unregistered scope/module and unavailable owners
 ok 2 - prepareNavigation denies unregistered scope/module and unavailable owners
   ---
-  duration_ms: 0.4995
+  duration_ms: 0.3327
   type: 'test'
   ...
 # Subtest: malformed or stale intents are mapped to fixed codes without leaking module text
 ok 3 - malformed or stale intents are mapped to fixed codes without leaking module text
   ---
-  duration_ms: 0.9068
+  duration_ms: 0.7309
   type: 'test'
   ...
 # Subtest: intent ids are single-use and receipts never raise permissions or completion
 ok 4 - intent ids are single-use and receipts never raise permissions or completion
   ---
-  duration_ms: 1.0386
+  duration_ms: 0.8959
   type: 'test'
   ...
 # Subtest: operation.get is context-scoped and reports unknown rather than guessing
 ok 5 - operation.get is context-scoped and reports unknown rather than guessing
   ---
-  duration_ms: 0.729
+  duration_ms: 0.294
   type: 'test'
   ...
 # Subtest: client-authored navigation cannot fabricate a panel that the client is not allowed to see
 ok 6 - client-authored navigation cannot fabricate a panel that the client is not allowed to see
   ---
-  duration_ms: 0.315
+  duration_ms: 0.1571
   type: 'test'
   ...
 # Subtest: rc.5 loader wrapper: id, first executable statement, only react required, plugin shape
 ok 7 - rc.5 loader wrapper: id, first executable statement, only react required, plugin shape
   ---
-  duration_ms: 3.6837
+  duration_ms: 3.3993
   type: 'test'
   ...
 # Subtest: one scoped stylesheet is injected at materialization with a11y/layout rules
 ok 8 - one scoped stylesheet is injected at materialization with a11y/layout rules
   ---
-  duration_ms: 1.328
+  duration_ms: 0.7521
   type: 'test'
   ...
 # Subtest: registers the keyed main panel and the sidebar panellist entry
 ok 9 - registers the keyed main panel and the sidebar panellist entry
   ---
-  duration_ms: 0.6783
+  duration_ms: 0.6103
   type: 'test'
   ...
 # Subtest: zero contexts: blocked view, fixed reason, no polling
 ok 10 - zero contexts: blocked view, fixed reason, no polling
   ---
-  duration_ms: 8.3041
+  duration_ms: 6.7727
   type: 'test'
   ...
 # Subtest: discovery request shell uses the reserved bootstrap context_ref and fresh operation ids
 ok 11 - discovery request shell uses the reserved bootstrap context_ref and fresh operation ids
   ---
-  duration_ms: 5.9011
+  duration_ms: 5.0302
   type: 'test'
   ...
 # Subtest: one context is auto-selected; status.get is polled with after_revision and skips re-render when unchanged
 ok 12 - one context is auto-selected; status.get is polled with after_revision and skips re-render when unchanged
   ---
-  duration_ms: 5.5104
+  duration_ms: 4.354
   type: 'test'
   ...
 # Subtest: polling keeps at most one status.get in flight per view
 ok 13 - polling keeps at most one status.get in flight per view
   ---
-  duration_ms: 5.8556
+  duration_ms: 4.2509
   type: 'test'
   ...
 # Subtest: more than one context requires an explicit choice and does not poll before it
 ok 14 - more than one context requires an explicit choice and does not poll before it
   ---
-  duration_ms: 3.2051
+  duration_ms: 2.7181
   type: 'test'
   ...
 # Subtest: fixture_mode context shows the non-real-capability banner
 ok 15 - fixture_mode context shows the non-real-capability banner
   ---
-  duration_ms: 2.0396
+  duration_ms: 1.8888
   type: 'test'
   ...
 # Subtest: switching context aborts the old in-flight status request and discards its late response
 ok 16 - switching context aborts the old in-flight status request and discards its late response
   ---
-  duration_ms: 5.2498
+  duration_ms: 3.5155
   type: 'test'
   ...
 # Subtest: scope_generation change in a status response bumps view_epoch, clears details, refreshes context.list and polls the new generation
 ok 17 - scope_generation change in a status response bumps view_epoch, clears details, refreshes context.list and polls the new generation
   ---
-  duration_ms: 5.8836
+  duration_ms: 2.7915
   type: 'test'
   ...
 # Subtest: hidden document stops polling and aborts the in-flight request; visible resumes it
 ok 18 - hidden document stops polling and aborts the in-flight request; visible resumes it
   ---
-  duration_ms: 3.2927
+  duration_ms: 3.6665
   type: 'test'
   ...
 # Subtest: unmount clears the interval, aborts in flight, removes the visibility listener and sends nothing more
 ok 19 - unmount clears the interval, aborts in flight, removes the visibility listener and sends nothing more
   ---
-  duration_ms: 2.5193
+  duration_ms: 2.0429
   type: 'test'
   ...
 # Subtest: apply disposer removes slot registrations, scoped style and listeners
 ok 20 - apply disposer removes slot registrations, scoped style and listeners
   ---
-  duration_ms: 1.6837
+  duration_ms: 1.5537
   type: 'test'
   ...
 # Subtest: return to chat selects the conversation panel without any business claim
 ok 21 - return to chat selects the conversation panel without any business claim
   ---
-  duration_ms: 5.5039
+  duration_ms: 4.0257
   type: 'test'
   ...
 # Subtest: valid panel intent selects the target panel exactly once and records an opened receipt
 ok 22 - valid panel intent selects the target panel exactly once and records an opened receipt
   ---
-  duration_ms: 3.1484
+  duration_ms: 2.6547
   type: 'test'
   ...
 # Subtest: duplicate intent_id is deduped and never navigates twice
 ok 23 - duplicate intent_id is deduped and never navigates twice
   ---
-  duration_ms: 5.6631
+  duration_ms: 4.2469
   type: 'test'
   ...
 # Subtest: expired intent is stale: no selectPanel, stale receipt with EXPIRED_INTENT
 ok 24 - expired intent is stale: no selectPanel, stale receipt with EXPIRED_INTENT
   ---
-  duration_ms: 3.6989
+  duration_ms: 3.419
   type: 'test'
   ...
 # Subtest: intent bound to another scope/generation/context_revision is stale and never navigates
 ok 25 - intent bound to another scope/generation/context_revision is stale and never navigates
   ---
-  duration_ms: 6.7399
+  duration_ms: 6.0568
   type: 'test'
   ...
 # Subtest: skill intent renders a visible instruction card, records instruction_shown and never navigates
 ok 26 - skill intent renders a visible instruction card, records instruction_shown and never navigates
   ---
-  duration_ms: 3.3508
+  duration_ms: 3.1883
   type: 'test'
   ...
 # Subtest: host_command intent also renders the instruction card without executing anything
 ok 27 - host_command intent also renders the instruction card without executing anything
   ---
-  duration_ms: 2.4257
+  duration_ms: 2.9094
   type: 'test'
   ...
 # Subtest: selectPanel throwing becomes a local unavailable state plus TARGET_UNREGISTERED receipt
 ok 28 - selectPanel throwing becomes a local unavailable state plus TARGET_UNREGISTERED receipt
   ---
-  duration_ms: 2.5836
+  duration_ms: 2.6667
   type: 'test'
   ...
 # Subtest: Host business rejection of navigation.prepare is explained, not navigated
 ok 29 - Host business rejection of navigation.prepare is explained, not navigated
   ---
-  duration_ms: 3.904
+  duration_ms: 2.4225
   type: 'test'
   ...
 # Subtest: cards show state text, local reason explanation, localized time and disabled entry for non-ready modules
 ok 30 - cards show state text, local reason explanation, localized time and disabled entry for non-ready modules
   ---
-  duration_ms: 1.9041
+  duration_ms: 1.4481
   type: 'test'
   ...
 # Subtest: attention/blocked modules, outcome_unknown operations and error diagnostics appear in the needs-attention section
 ok 31 - attention/blocked modules, outcome_unknown operations and error diagnostics appear in the needs-attention section
   ---
-  duration_ms: 2.1254
+  duration_ms: 1.743
   type: 'test'
   ...
 # Subtest: outcome_unknown operations are shown as 结果待核实, distinct from failed/queued
 ok 32 - outcome_unknown operations are shown as 结果待核实, distinct from failed/queued
   ---
-  duration_ms: 1.4218
+  duration_ms: 1.2043
   type: 'test'
   ...
 # Subtest: known-but-unselected modules are listed read-only under 后续接入
 ok 33 - known-but-unselected modules are listed read-only under 后续接入
   ---
-  duration_ms: 1.3519
+  duration_ms: 1.2116
   type: 'test'
   ...
 # Subtest: cards show the owner release version from the context.list catalog summary
 ok 34 - cards show the owner release version from the context.list catalog summary
   ---
-  duration_ms: 1.5101
+  duration_ms: 1.6167
   type: 'test'
   ...
 # Subtest: malformed context.list catalog rows are ignored and the remaining rows still render
 ok 35 - malformed context.list catalog rows are ignored and the remaining rows still render
   ---
-  duration_ms: 2.4891
+  duration_ms: 1.236
   type: 'test'
   ...
 # Subtest: cards fall back to the fixed label map when the catalog row is missing
 ok 36 - cards fall back to the fixed label map when the catalog row is missing
   ---
-  duration_ms: 1.7375
+  duration_ms: 1.3919
   type: 'test'
   ...
 # Subtest: 后续接入 uses catalog summary names and versions when available, still read-only
 ok 37 - 后续接入 uses catalog summary names and versions when available, still read-only
   ---
-  duration_ms: 1.3389
+  duration_ms: 1.2141
   type: 'test'
   ...
 # Subtest: RpcResult {ok:false} maps to the fixed TRANSPORT_FAILURE text and never leaks Host message/details
 ok 38 - RpcResult {ok:false} maps to the fixed TRANSPORT_FAILURE text and never leaks Host message/details
   ---
-  duration_ms: 1.7634
+  duration_ms: 1.5938
   type: 'test'
   ...
 # Subtest: transport exceptions are mapped to the fixed transport-failure text too
 ok 39 - transport exceptions are mapped to the fixed transport-failure text too
   ---
-  duration_ms: 1.1142
+  duration_ms: 1.0812
   type: 'test'
   ...
 # Subtest: composition check requests composition.preview with expected_revision/selected_ids, renders the diff and never calls apply
 ok 40 - composition check requests composition.preview with expected_revision/selected_ids, renders the diff and never calls apply
   ---
-  duration_ms: 3.308
+  duration_ms: 3.1694
   type: 'test'
   ...
 # Subtest: composition.preview business failure shows a local explanation and never applies
 ok 41 - composition.preview business failure shows a local explanation and never applies
   ---
-  duration_ms: 3.3385
+  duration_ms: 2.7767
   type: 'test'
   ...
 # Subtest: live region, native buttons and focusable error summary are present
 ok 42 - live region, native buttons and focusable error summary are present
   ---
-  duration_ms: 2.914
+  duration_ms: 2.3728
   type: 'test'
   ...
 # Subtest: strict module manifest validator accepts a complete v1 manifest and rejects deviations
 ok 43 - strict module manifest validator accepts a complete v1 manifest and rejects deviations
   ---
-  duration_ms: 2.2418
+  duration_ms: 1.4689
   type: 'test'
   ...
 # Subtest: locked baseline accepts rc.5 and rejects future/unknown hosts
 ok 44 - locked baseline accepts rc.5 and rejects future/unknown hosts
   ---
-  duration_ms: 4.099
+  duration_ms: 2.7539
   type: 'test'
   ...
 # Subtest: vendored semver is the pinned version and compares prereleases correctly
 ok 45 - vendored semver is the pinned version and compares prereleases correctly
   ---
-  duration_ms: 0.2666
+  duration_ms: 0.1799
   type: 'test'
   ...
 # Subtest: action, status, intent, access and profile contracts reject malformed shapes
 ok 46 - action, status, intent, access and profile contracts reject malformed shapes
   ---
-  duration_ms: 0.7143
+  duration_ms: 0.5989
   type: 'test'
   ...
 # Subtest: RPC shell and business response enforce sizes, success/failure split and reason codes
 ok 47 - RPC shell and business response enforce sizes, success/failure split and reason codes
   ---
-  duration_ms: 0.5751
+  duration_ms: 0.474
   type: 'test'
   ...
 # Subtest: canonical JSON digests are key-order independent and reject non-finite numbers
 ok 48 - canonical JSON digests are key-order independent and reject non-finite numbers
   ---
-  duration_ms: 0.7188
+  duration_ms: 0.6508
   type: 'test'
   ...
 # Subtest: source-lock validates strictly and verifies the checked-in artifact bytes
 ok 49 - source-lock validates strictly and verifies the checked-in artifact bytes
   ---
-  duration_ms: 17.6304
+  duration_ms: 14.2078
   type: 'test'
   ...
 # Subtest: pinned rc.5 archive digests and reviewed seams match the frozen baseline
 ok 50 - pinned rc.5 archive digests and reviewed seams match the frozen baseline
   ---
-  duration_ms: 334.7786
+  duration_ms: 301.2442
   type: 'test'
   ...
 # Subtest: rc.5 seamed files keep the design-doc digests (layout/renderer/connection)
 ok 51 - rc.5 seamed files keep the design-doc digests (layout/renderer/connection)
   ---
-  duration_ms: 0.2082
+  duration_ms: 0.1408
   type: 'test'
   ...
 # Subtest: doctor exits 0 for the pinned isolated baseline
 ok 52 - doctor exits 0 for the pinned isolated baseline
   ---
-  duration_ms: 505.8795
+  duration_ms: 448.1316
   type: 'test'
   ...
 # Subtest: doctor rejects an unpinned host with needs_verification
 ok 53 - doctor rejects an unpinned host with needs_verification
   ---
-  duration_ms: 131.689
+  duration_ms: 125.7836
   type: 'test'
   ...
 # Subtest: refuses relative, parent-traversal, UNC and non-empty untracked roots
 ok 54 - refuses relative, parent-traversal, UNC and non-empty untracked roots
   ---
-  duration_ms: 5.7147
+  duration_ms: 5.9938
   type: 'test'
   ...
 # Subtest: refuses a symlinked or reparse-point root component
 ok 55 - refuses a symlinked or reparse-point root component
   ---
-  duration_ms: 4.218
+  duration_ms: 4.1786
   type: 'test'
   ...
 # Subtest: creates a marker-owned scratch store with an empty revision 0 and reuses it
 ok 56 - creates a marker-owned scratch store with an empty revision 0 and reuses it
   ---
-  duration_ms: 26.1515
+  duration_ms: 21.8726
   type: 'test'
   ...
 # Subtest: apply with injected verification activates and seals the revision
 ok 57 - apply with injected verification activates and seals the revision
   ---
-  duration_ms: 83.7014
+  duration_ms: 74.0989
   type: 'test'
   ...
 # Subtest: repeated identical composition is a no-op with no second revision
 ok 58 - repeated identical composition is a no-op with no second revision
   ---
-  duration_ms: 75.8478
+  duration_ms: 83.8323
   type: 'test'
   ...
 # Subtest: replaying one operation id returns the known result without a new revision
 ok 59 - replaying one operation id returns the known result without a new revision
   ---
-  duration_ms: 73.9371
+  duration_ms: 66.03
   type: 'test'
   ...
 # Subtest: prepare rejects a stale expected revision
 ok 60 - prepare rejects a stale expected revision
   ---
-  duration_ms: 64.3626
+  duration_ms: 65.9027
   type: 'test'
   ...
 # Subtest: an expired preview is stale and writes nothing
 ok 61 - an expired preview is stale and writes nothing
   ---
-  duration_ms: 24.2217
+  duration_ms: 19.9509
   type: 'test'
   ...
 # Subtest: an external revision change is a revision conflict that preserves both sides
 ok 62 - an external revision change is a revision conflict that preserves both sides
   ---
-  duration_ms: 79.448
+  duration_ms: 71.7085
   type: 'test'
   ...
 # Subtest: an external digest change at the same revision is a revision conflict
 ok 63 - an external digest change at the same revision is a revision conflict
   ---
-  duration_ms: 83.8127
+  duration_ms: 72.2908
   type: 'test'
   ...
 # Subtest: the same operation id with a different digest is an idempotency conflict
 ok 64 - the same operation id with a different digest is an idempotency conflict
   ---
-  duration_ms: 72.2189
+  duration_ms: 66.0226
   type: 'test'
   ...
 # Subtest: a lock owned by a live process is denied and never stolen
 ok 65 - a lock owned by a live process is denied and never stolen
   ---
-  duration_ms: 72.3046
+  duration_ms: 69.6313
   type: 'test'
   ...
 # Subtest: a lock whose owner process exited is cleaned before writing
 ok 66 - a lock whose owner process exited is cleaned before writing
   ---
-  duration_ms: 181.8358
+  duration_ms: 155.9783
   type: 'test'
   ...
 # Subtest: crash after the switch leaves a journal and recover restores the previous revision
 ok 67 - crash after the switch leaves a journal and recover restores the previous revision
   ---
-  duration_ms: 135.5677
+  duration_ms: 112.3043
   type: 'test'
   ...
 # Subtest: crash before the switch cleans the unreferenced revision
 ok 68 - crash before the switch cleans the unreferenced revision
   ---
-  duration_ms: 87.6964
+  duration_ms: 69.7581
   type: 'test'
   ...
 # Subtest: recover preserves both sides when the pointer moved outside the store
 ok 69 - recover preserves both sides when the pointer moved outside the store
   ---
-  duration_ms: 104.1577
+  duration_ms: 101.8127
   type: 'test'
   ...
 # Subtest: an ENOSPC on the pointer switch keeps the previous current intact
 ok 70 - an ENOSPC on the pointer switch keeps the previous current intact
   ---
-  duration_ms: 103.8957
+  duration_ms: 114.4546
   type: 'test'
   ...
 # Subtest: a busy quiesce denies the switch and drops the staged revision
 ok 71 - a busy quiesce denies the switch and drops the staged revision
   ---
-  duration_ms: 41.9649
+  duration_ms: 45.5207
   type: 'test'
   ...
 # Subtest: the default verification never claims active without runtime evidence
 ok 72 - the default verification never claims active without runtime evidence
   ---
-  duration_ms: 77.9855
+  duration_ms: 72.2282
   type: 'test'
   ...
 # Subtest: restore tool recovers a crashed profile and refuses non-scratch roots
 ok 73 - restore tool recovers a crashed profile and refuses non-scratch roots
   ---
-  duration_ms: 111.9686
+  duration_ms: 130.213
   type: 'test'
   ...
 # Subtest: compose fixture CLI is scratch-only and idempotent
 ok 74 - compose fixture CLI is scratch-only and idempotent
   ---
-  duration_ms: 82.0036
+  duration_ms: 91.6539
   type: 'test'
   ...
 # Subtest: two writers of one resource conflict, including global vs narrower scope
 ok 75 - two writers of one resource conflict, including global vs narrower scope
   ---
-  duration_ms: 5.442
+  duration_ms: 5.2133
   type: 'test'
   ...
 # Subtest: two global writers of one resource conflict
 ok 76 - two global writers of one resource conflict
   ---
-  duration_ms: 0.2346
+  duration_ms: 0.2229
   type: 'test'
   ...
 # Subtest: two modules registering the same tool name conflict
 ok 77 - two modules registering the same tool name conflict
   ---
-  duration_ms: 0.3811
+  duration_ms: 0.3702
   type: 'test'
   ...
 # Subtest: two single-mode slots with the same name conflict
 ok 78 - two single-mode slots with the same name conflict
   ---
-  duration_ms: 0.4346
+  duration_ms: 0.4082
   type: 'test'
   ...
 # Subtest: mixing single and keyed modes on one slot name conflicts
 ok 79 - mixing single and keyed modes on one slot name conflicts
   ---
-  duration_ms: 0.1751
+  duration_ms: 0.2076
   type: 'test'
   ...
 # Subtest: keyed slots conflict on the same name+key but coexist on distinct keys
 ok 80 - keyed slots conflict on the same name+key but coexist on distinct keys
   ---
-  duration_ms: 0.2164
+  duration_ms: 0.1924
   type: 'test'
   ...
 # Subtest: list slots conflict on the same name+key but coexist on distinct keys
 ok 81 - list slots conflict on the same name+key but coexist on distinct keys
   ---
-  duration_ms: 0.1994
+  duration_ms: 0.1429
   type: 'test'
   ...
 # Subtest: two exclusive_mutate hooks on one name conflict
 ok 82 - two exclusive_mutate hooks on one name conflict
   ---
-  duration_ms: 0.3713
+  duration_ms: 0.2874
   type: 'test'
   ...
 # Subtest: observe hooks coexist and only produce an informational diagnostic
 ok 83 - observe hooks coexist and only produce an informational diagnostic
   ---
-  duration_ms: 0.3159
+  duration_ms: 0.4168
   type: 'test'
   ...
 # Subtest: a single exclusive mutator coexists with observers of the same hook
 ok 84 - a single exclusive mutator coexists with observers of the same hook
   ---
-  duration_ms: 0.1738
+  duration_ms: 0.1489
   type: 'test'
   ...
 # Subtest: conflict diagnostics are deterministic and sorted for shuffled input
 ok 85 - conflict diagnostics are deterministic and sorted for shuffled input
   ---
-  duration_ms: 0.2387
+  duration_ms: 0.2388
   type: 'test'
   ...
 # Subtest: conflicts are detected only among the selected modules
 ok 86 - conflicts are detected only among the selected modules
   ---
-  duration_ms: 0.2063
+  duration_ms: 0.2257
   type: 'test'
   ...
 # Subtest: a dependency cycle blocks all participating modules through the resolver
 ok 87 - a dependency cycle blocks all participating modules through the resolver
   ---
-  duration_ms: 0.3423
+  duration_ms: 0.3174
   type: 'test'
   ...
 # Subtest: module order and digest stay stable for equivalent inputs
 ok 88 - module order and digest stay stable for equivalent inputs
   ---
-  duration_ms: 0.3528
+  duration_ms: 0.3345
   type: 'test'
   ...
 # Subtest: inspectConflicts rejects an invalid manifest instead of guessing
 ok 89 - inspectConflicts rejects an invalid manifest instead of guessing
   ---
-  duration_ms: 0.5392
+  duration_ms: 0.5697
   type: 'test'
   ...
-# local-workbench: workbench RPC channel registered
-# local-workbench: workbench RPC channel registered
-# local-workbench: workbench RPC channel registered
-# local-workbench: workbench RPC channel registered
-# Subtest: host plugin registers one RPC channel, provides the service and disposes cleanly
-ok 90 - host plugin registers one RPC channel, provides the service and disposes cleanly
+# local-workbench: workbench HTTP RPC route registered
+# local-workbench: workbench HTTP RPC route registered
+# local-workbench: workbench HTTP RPC route registered
+# local-workbench: workbench HTTP RPC route registered
+# Subtest: host plugin registers one HTTP RPC route, provides the service and disposes cleanly
+ok 90 - host plugin registers one HTTP RPC route, provides the service and disposes cleanly
   ---
-  duration_ms: 11.7198
+  duration_ms: 11.4342
   type: 'test'
   ...
 # Subtest: missing local config yields a blocked service instead of crashing the profile
 ok 91 - missing local config yields a blocked service instead of crashing the profile
   ---
-  duration_ms: 4.3649
+  duration_ms: 2.3483
   type: 'test'
   ...
 # Subtest: config path can be overridden for an isolated boot and is loaded strictly
 ok 92 - config path can be overridden for an isolated boot and is loaded strictly
   ---
-  duration_ms: 3.4409
+  duration_ms: 3.2596
   type: 'test'
   ...
 # Subtest: plugin dispose is idempotent and a second runtime cannot double-register
 ok 93 - plugin dispose is idempotent and a second runtime cannot double-register
   ---
-  duration_ms: 4.2434
+  duration_ms: 4.1374
   type: 'test'
   ...
 # Subtest: the host plugin never reads credentials or user profiles on apply
 ok 94 - the host plugin never reads credentials or user profiles on apply
   ---
-  duration_ms: 5.6502
+  duration_ms: 3.9735
   type: 'test'
   ...
-# local-workbench: workbench RPC channel registered
+# local-workbench: workbench HTTP RPC route registered
 # Subtest: strict config accepts the fixture config and rejects unsafe variants
 ok 95 - strict config accepts the fixture config and rejects unsafe variants
   ---
-  duration_ms: 3.4463
+  duration_ms: 2.411
   type: 'test'
   ...
 # Subtest: config resolution honours DSH_HOME and the explicit override
 ok 96 - config resolution honours DSH_HOME and the explicit override
   ---
-  duration_ms: 3.4306
+  duration_ms: 2.6774
   type: 'test'
   ...
 # Subtest: loadWorkbenchConfig reports missing/unparseable/invalid config without throwing
 ok 97 - loadWorkbenchConfig reports missing/unparseable/invalid config without throwing
   ---
-  duration_ms: 5.2653
+  duration_ms: 4.75
   type: 'test'
   ...
 # Subtest: profile store roots stay strictly under DSH_HOME and require fixture mode
 ok 98 - profile store roots stay strictly under DSH_HOME and require fixture mode
   ---
-  duration_ms: 2.2452
+  duration_ms: 1.9229
   type: 'test'
   ...
 # Subtest: runtime with fixture status overrides maps panel keys and blocks missing owners
 ok 99 - runtime with fixture status overrides maps panel keys and blocks missing owners
   ---
-  duration_ms: 5.0358
+  duration_ms: 3.0386
   type: 'test'
   ...
 # Subtest: runtime without fixture mode has no descriptors and reports NOT_READY
 ok 100 - runtime without fixture mode has no descriptors and reports NOT_READY
   ---
-  duration_ms: 0.8027
+  duration_ms: 0.7845
   type: 'test'
   ...
 # Subtest: fixture descriptors are deterministic and never claim a real release
 ok 101 - fixture descriptors are deterministic and never claim a real release
   ---
-  duration_ms: 0.1523
+  duration_ms: 0.1422
   type: 'test'
   ...
 # Subtest: blocked runtime stays inert and cannot register descriptors
 ok 102 - blocked runtime stays inert and cannot register descriptors
   ---
-  duration_ms: 0.0991
+  duration_ms: 0.0928
   type: 'test'
   ...
 # Subtest: resolveDshHome prefers the host service then DSH_HOME then null
 ok 103 - resolveDshHome prefers the host service then DSH_HOME then null
   ---
-  duration_ms: 0.1141
+  duration_ms: 0.1127
   type: 'test'
   ...
-# Subtest: plugin works through a fake connection service with an explicit config override
-ok 104 - plugin works through a fake connection service with an explicit config override
+# Subtest: plugin works through a fake Host service pair with an explicit config override
+ok 104 - plugin works through a fake Host service pair with an explicit config override
   ---
-  duration_ms: 4.8901
+  duration_ms: 4.8623
   type: 'test'
   ...
 # Subtest: real pinned rc.5 Cordis mounts, serves and disposes the workbench host plugin
 ok 105 - real pinned rc.5 Cordis mounts, serves and disposes the workbench host plugin # SKIP
   ---
-  duration_ms: 0.3573
+  duration_ms: 0.3489
   type: 'test'
   ...
 # Subtest: real pinned rc.5 Context keeps a blocked workbench when config is missing
 ok 106 - real pinned rc.5 Context keeps a blocked workbench when config is missing # SKIP
   ---
-  duration_ms: 0.0581
+  duration_ms: 0.0624
+  type: 'test'
+  ...
+# Subtest: carrier registers one prefix route and returns the frozen server-response envelope
+ok 107 - carrier registers one prefix route and returns the frozen server-response envelope
+  ---
+  duration_ms: 1.4898
+  type: 'test'
+  ...
+# Subtest: carrier rejects non-POST, malformed bodies and invalid envelopes with fixed responses
+ok 108 - carrier rejects non-POST, malformed bodies and invalid envelopes with fixed responses
+  ---
+  duration_ms: 0.3088
+  type: 'test'
+  ...
+# Subtest: carrier enforces the bounded request body
+ok 109 - carrier enforces the bounded request body
+  ---
+  duration_ms: 0.1726
+  type: 'test'
+  ...
+# Subtest: carrier maps handler throws to a fixed internal failure without leaking error text
+ok 110 - carrier maps handler throws to a fixed internal failure without leaking error text
+  ---
+  duration_ms: 0.1567
+  type: 'test'
+  ...
+# Subtest: carrier writes admission rejections before parsing the body
+ok 111 - carrier writes admission rejections before parsing the body
+  ---
+  duration_ms: 0.1033
+  type: 'test'
+  ...
+# Subtest: carrier requires the reviewed Host services and disposes the route
+ok 112 - carrier requires the reviewed Host services and disposes the route
+  ---
+  duration_ms: 0.1885
   type: 'test'
   ...
 # Subtest: runtime sources contain no network, process-spawn or dynamic-eval sinks
-ok 107 - runtime sources contain no network, process-spawn or dynamic-eval sinks
+ok 113 - runtime sources contain no network, process-spawn or dynamic-eval sinks
   ---
-  duration_ms: 7.2619
+  duration_ms: 8.3421
   type: 'test'
   ...
 # Subtest: only the reviewed environment variables are read
-ok 108 - only the reviewed environment variables are read
+ok 114 - only the reviewed environment variables are read
   ---
-  duration_ms: 1.5758
+  duration_ms: 1.7777
   type: 'test'
   ...
 # Subtest: network-capable modules and secret-shaped config fields are rejected
-ok 109 - network-capable modules and secret-shaped config fields are rejected
+ok 115 - network-capable modules and secret-shaped config fields are rejected
   ---
-  duration_ms: 1.3156
+  duration_ms: 1.3497
   type: 'test'
   ...
 # Subtest: config and responses never echo secret material or absolute machine paths
-ok 110 - config and responses never echo secret material or absolute machine paths
+ok 116 - config and responses never echo secret material or absolute machine paths
   ---
-  duration_ms: 4.3262
+  duration_ms: 4.1072
   type: 'test'
   ...
 # Subtest: thrown descriptor errors are sanitized to fixed codes
-ok 111 - thrown descriptor errors are sanitized to fixed codes
+ok 117 - thrown descriptor errors are sanitized to fixed codes
   ---
-  duration_ms: 0.6956
+  duration_ms: 0.9334
   type: 'test'
   ...
 # Subtest: oversized responses fail with a fixed LIMIT_EXCEEDED envelope
-ok 112 - oversized responses fail with a fixed LIMIT_EXCEEDED envelope
+ok 118 - oversized responses fail with a fixed LIMIT_EXCEEDED envelope
   ---
-  duration_ms: 2.5199
+  duration_ms: 2.4402
   type: 'test'
   ...
 # Subtest: the workbench path does not require or perform any fetch when handlers run
-ok 113 - the workbench path does not require or perform any fetch when handlers run
+ok 119 - the workbench path does not require or perform any fetch when handlers run
   ---
-  duration_ms: 0.5044
+  duration_ms: 0.4613
   type: 'test'
   ...
 # Subtest: client bundle contains no fetch/CSS-CDN/remote asset references
-ok 114 - client bundle contains no fetch/CSS-CDN/remote asset references
+ok 120 - client bundle contains no fetch/CSS-CDN/remote asset references
   ---
-  duration_ms: 0.7819
+  duration_ms: 0.6857
   type: 'test'
   ...
 # Subtest: registry rejects duplicate/invalid catalog data and unsafe composition digests
-ok 115 - registry rejects duplicate/invalid catalog data and unsafe composition digests
+ok 121 - registry rejects duplicate/invalid catalog data and unsafe composition digests
   ---
-  duration_ms: 1.9311
+  duration_ms: 1.7244
   type: 'test'
   ...
 # Subtest: descriptor registration is single-owner, in-process and catalog-bound
-ok 116 - descriptor registration is single-owner, in-process and catalog-bound
+ok 122 - descriptor registration is single-owner, in-process and catalog-bound
   ---
-  duration_ms: 0.4391
+  duration_ms: 0.5188
   type: 'test'
   ...
 # Subtest: snapshot returns blocked cards for missing owners and rejects invalid status output
-ok 117 - snapshot returns blocked cards for missing owners and rejects invalid status output
+ok 123 - snapshot returns blocked cards for missing owners and rejects invalid status output
   ---
-  duration_ms: 2.1063
+  duration_ms: 2.1097
   type: 'test'
   ...
 # Subtest: descriptor subscriptions are registered once per context generation and replaced on generation change
-ok 118 - descriptor subscriptions are registered once per context generation and replaced on generation change
+ok 124 - descriptor subscriptions are registered once per context generation and replaced on generation change
   ---
-  duration_ms: 0.3398
+  duration_ms: 0.3456
   type: 'test'
   ...
 # Subtest: status subscription updates bump the aggregate revision and after_revision short-circuits
-ok 119 - status subscription updates bump the aggregate revision and after_revision short-circuits
+ok 125 - status subscription updates bump the aggregate revision and after_revision short-circuits
   ---
-  duration_ms: 0.5695
+  duration_ms: 0.5883
   type: 'test'
   ...
 # Subtest: quiesce maps descriptor answers to idle/busy/unknown without inventing completion
-ok 120 - quiesce maps descriptor answers to idle/busy/unknown without inventing completion
+ok 126 - quiesce maps descriptor answers to idle/busy/unknown without inventing completion
   ---
-  duration_ms: 0.2208
+  duration_ms: 0.258
   type: 'test'
   ...
 # Subtest: dispose releases subscriptions and makes further snapshots fail closed
-ok 121 - dispose releases subscriptions and makes further snapshots fail closed
+ok 127 - dispose releases subscriptions and makes further snapshots fail closed
   ---
-  duration_ms: 0.2578
+  duration_ms: 0.2685
   type: 'test'
   ...
 # Subtest: service shape probe and allowed module filtering stay catalog-bound
-ok 122 - service shape probe and allowed module filtering stay catalog-bound
+ok 128 - service shape probe and allowed module filtering stay catalog-bound
   ---
-  duration_ms: 0.1783
+  duration_ms: 0.1945
   type: 'test'
   ...
 # Subtest: rc.5 fixture catalog resolves 05 then 07 with a stable digest
-ok 123 - rc.5 fixture catalog resolves 05 then 07 with a stable digest
+ok 129 - rc.5 fixture catalog resolves 05 then 07 with a stable digest
   ---
-  duration_ms: 5.061
+  duration_ms: 5.1137
   type: 'test'
   ...
 # Subtest: request order does not change order or digest
-ok 124 - request order does not change order or digest
+ok 130 - request order does not change order or digest
   ---
-  duration_ms: 0.5172
+  duration_ms: 0.5076
   type: 'test'
   ...
 # Subtest: a Host version that is not the pinned baseline is needs_verification and blocked
-ok 125 - a Host version that is not the pinned baseline is needs_verification and blocked
+ok 131 - a Host version that is not the pinned baseline is needs_verification and blocked
   ---
-  duration_ms: 0.579
+  duration_ms: 0.3449
   type: 'test'
   ...
 # Subtest: a manifest that only verified a future Host is blocked on the pinned Host
-ok 126 - a manifest that only verified a future Host is blocked on the pinned Host
+ok 132 - a manifest that only verified a future Host is blocked on the pinned Host
   ---
-  duration_ms: 0.423
+  duration_ms: 0.4361
   type: 'test'
   ...
 # Subtest: a lock digest mismatch blocks the module it locks
-ok 127 - a lock digest mismatch blocks the module it locks
+ok 133 - a lock digest mismatch blocks the module it locks
   ---
-  duration_ms: 0.1823
+  duration_ms: 0.2683
   type: 'test'
   ...
 # Subtest: a missing lock entry is rejected, never defaulted open
-ok 128 - a missing lock entry is rejected, never defaulted open
+ok 134 - a missing lock entry is rejected, never defaulted open
   ---
-  duration_ms: 0.1951
+  duration_ms: 0.1593
   type: 'test'
   ...
 # Subtest: an unknown requested module is blocked and named
-ok 129 - an unknown requested module is blocked and named
+ok 135 - an unknown requested module is blocked and named
   ---
-  duration_ms: 0.2083
+  duration_ms: 0.1848
   type: 'test'
   ...
 # Subtest: a missing required dependency blocks and names both modules
-ok 130 - a missing required dependency blocks and names both modules
+ok 136 - a missing required dependency blocks and names both modules
   ---
-  duration_ms: 0.2888
+  duration_ms: 0.3073
   type: 'test'
   ...
 # Subtest: a missing optional dependency disables the feature and is never auto-enabled
-ok 131 - a missing optional dependency disables the feature and is never auto-enabled
+ok 137 - a missing optional dependency disables the feature and is never auto-enabled
   ---
-  duration_ms: 0.2467
+  duration_ms: 0.199
   type: 'test'
   ...
 # Subtest: a network policy of none rejects any module that would need a target
-ok 132 - a network policy of none rejects any module that would need a target
+ok 138 - a network policy of none rejects any module that would need a target
   ---
-  duration_ms: 0.231
+  duration_ms: 0.2521
   type: 'test'
   ...
 # Subtest: a requested target must already be allow-listed by the local policy
-ok 133 - a requested target must already be allow-listed by the local policy
+ok 139 - a requested target must already be allow-listed by the local policy
   ---
-  duration_ms: 0.2748
+  duration_ms: 0.3826
   type: 'test'
   ...
 # Subtest: a dependency cycle blocks and names every participating module
-ok 134 - a dependency cycle blocks and names every participating module
+ok 140 - a dependency cycle blocks and names every participating module
   ---
-  duration_ms: 0.2338
+  duration_ms: 0.24
   type: 'test'
   ...
 # Subtest: a module denied by the profile policy is blocked
-ok 135 - a module denied by the profile policy is blocked
+ok 141 - a module denied by the profile policy is blocked
   ---
-  duration_ms: 0.1846
+  duration_ms: 0.1729
   type: 'test'
   ...
 # Subtest: an empty request resolves to the empty composition
-ok 136 - an empty request resolves to the empty composition
+ok 142 - an empty request resolves to the empty composition
   ---
-  duration_ms: 0.0979
+  duration_ms: 0.0797
   type: 'test'
   ...
 # Subtest: invalid catalog manifests are rejected by the strict validator
-ok 137 - invalid catalog manifests are rejected by the strict validator
+ok 143 - invalid catalog manifests are rejected by the strict validator
   ---
-  duration_ms: 0.8007
+  duration_ms: 0.8814
   type: 'test'
   ...
 # Subtest: a manifest may not depend on the 08 composer
-ok 138 - a manifest may not depend on the 08 composer
+ok 144 - a manifest may not depend on the 08 composer
   ---
-  duration_ms: 0.2937
+  duration_ms: 0.3168
   type: 'test'
   ...
 # Subtest: every emitted diagnostic satisfies the shared diagnostic contract
-ok 139 - every emitted diagnostic satisfies the shared diagnostic contract
+ok 145 - every emitted diagnostic satisfies the shared diagnostic contract
   ---
-  duration_ms: 0.2504
+  duration_ms: 0.2517
   type: 'test'
   ...
 # Subtest: PREFERRED_ORDER is the frozen module ordering contract
-ok 140 - PREFERRED_ORDER is the frozen module ordering contract
+ok 146 - PREFERRED_ORDER is the frozen module ordering contract
   ---
-  duration_ms: 0.0482
+  duration_ms: 0.05
   type: 'test'
   ...
 # Subtest: context.list works with the reserved bootstrap ref for owner peers only
-ok 141 - context.list works with the reserved bootstrap ref for owner peers only
+ok 147 - context.list works with the reserved bootstrap ref for owner peers only
   ---
-  duration_ms: 3.4778
+  duration_ms: 3.5285
   type: 'test'
   ...
 # Subtest: status.get returns trusted scope status and after_revision does not repeat bodies
-ok 142 - status.get returns trusted scope status and after_revision does not repeat bodies
+ok 148 - status.get returns trusted scope status and after_revision does not repeat bodies
   ---
-  duration_ms: 2.2176
+  duration_ms: 2.403
   type: 'test'
   ...
 # Subtest: fabricated, revoked and stale contexts are rejected before descriptors run
-ok 143 - fabricated, revoked and stale contexts are rejected before descriptors run
+ok 149 - fabricated, revoked and stale contexts are rejected before descriptors run
   ---
-  duration_ms: 0.3686
+  duration_ms: 0.4417
   type: 'test'
   ...
 # Subtest: navigation.prepare returns accepted intents and fixed-code rejections
-ok 144 - navigation.prepare returns accepted intents and fixed-code rejections
+ok 150 - navigation.prepare returns accepted intents and fixed-code rejections
   ---
-  duration_ms: 0.7397
+  duration_ms: 0.7597
   type: 'test'
   ...
 # Subtest: input validation, unknown endpoints and limits use fixed invalid envelopes
-ok 145 - input validation, unknown endpoints and limits use fixed invalid envelopes
+ok 151 - input validation, unknown endpoints and limits use fixed invalid envelopes
   ---
-  duration_ms: 0.6759
+  duration_ms: 0.726
   type: 'test'
   ...
 # Subtest: handler never throws and never leaks error text, paths or secrets
-ok 146 - handler never throws and never leaks error text, paths or secrets
+ok 152 - handler never throws and never leaks error text, paths or secrets
   ---
-  duration_ms: 0.6475
+  duration_ms: 0.6005
   type: 'test'
   ...
 # Subtest: receipts and operation.get are diagnostic and context-scoped
-ok 147 - receipts and operation.get are diagnostic and context-scoped
+ok 153 - receipts and operation.get are diagnostic and context-scoped
   ---
-  duration_ms: 0.6448
+  duration_ms: 0.782
   type: 'test'
   ...
 # Subtest: composition.preview/apply go through the injected adapter and profile allow-list
-ok 148 - composition.preview/apply go through the injected adapter and profile allow-list
+ok 154 - composition.preview/apply go through the injected adapter and profile allow-list
   ---
-  duration_ms: 0.7419
+  duration_ms: 0.7789
   type: 'test'
   ...
 # Subtest: composition endpoints are unavailable when the adapter is absent
-ok 149 - composition endpoints are unavailable when the adapter is absent
+ok 155 - composition endpoints are unavailable when the adapter is absent
   ---
-  duration_ms: 0.256
+  duration_ms: 0.2416
   type: 'test'
   ...
 # Subtest: fixture status overrides are visible through status.get
-ok 150 - fixture status overrides are visible through status.get
+ok 156 - fixture status overrides are visible through status.get
   ---
-  duration_ms: 0.5736
+  duration_ms: 0.4566
   type: 'test'
   ...
 # Subtest: the catalog with a network module is rejected at config load (no hidden egress)
-ok 151 - the catalog with a network module is rejected at config load (no hidden egress)
+ok 157 - the catalog with a network module is rejected at config load (no hidden egress)
   ---
-  duration_ms: 0.2657
+  duration_ms: 0.2493
   type: 'test'
   ...
-1..151
-# tests 151
+1..157
+# tests 157
 # suites 0
-# pass 149
+# pass 155
 # fail 0
 # cancelled 0
 # skipped 2
 # todo 0
-# duration_ms 4291.6555
+# duration_ms 4076.2864

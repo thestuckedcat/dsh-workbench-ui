@@ -20,7 +20,7 @@ const SEMVER = {package: 'semver', version: '7.8.6', license: 'ISC', license_ref
 
 const INCLUDE_DIRS = ['src', 'bundle', 'tools', 'vendor/semver', 'profile'];
 const EXCLUDE = new Set(['source-lock.json']);
-const TEXT_EXTENSIONS = ['.mjs', '.js', '.json', '.yml', '.yaml', '.ts', '.tsx', '.css', '.md'];
+const TEXT_EXTENSIONS = ['.mjs', '.cjs', '.js', '.json', '.yml', '.yaml', '.ts', '.tsx', '.css', '.md'];
 
 function walk(dir, out = []) {
   for (const name of readdirSync(dir).sort()) {

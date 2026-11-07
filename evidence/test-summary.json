@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-06T18:25:15.869Z",
-  "started_at": "2026-11-06T18:25:11.461Z",
-  "duration_ms": 4405,
+  "generated_at": "2026-11-07T01:27:05.233Z",
+  "started_at": "2026-11-07T01:27:01.039Z",
+  "duration_ms": 4190,
   "runtime": {
     "executable": "E:\\dsh\\plugin\\08-workbench-ui\\runtime\\node.exe",
     "node": "26.13.0",
@@ -24,6 +24,7 @@
       "tests/dispose.test.mjs",
       "tests/host-rc5.test.mjs",
       "tests/host-rpc.test.mjs",
+      "tests/http-rpc.test.mjs",
       "tests/network.test.mjs",
       "tests/registry.test.mjs",
       "tests/resolve.test.mjs",
@@ -39,6 +40,7 @@
     "tests/dispose.test.mjs",
     "tests/host-rc5.test.mjs",
     "tests/host-rpc.test.mjs",
+    "tests/http-rpc.test.mjs",
     "tests/network.test.mjs",
     "tests/registry.test.mjs",
     "tests/resolve.test.mjs",
@@ -46,8 +48,8 @@
   ],
   "exit_code": 0,
   "summary": {
-    "tests": 151,
-    "pass": 149,
+    "tests": 157,
+    "pass": 155,
     "fail": 0,
     "cancelled": 0,
     "skipped": 2,
@@ -55,7 +57,7 @@
   },
   "verified": true,
   "source_lock": {
-    "sha256": "2028f011706472a837938edccf13e5cd15cfa4b9d2e66e01ad7f6e5218df26a2",
+    "sha256": "504ce7eed9cdb140cfafbe4ea938825edf59ef24b7280e5092a0173b4f6faf97",
     "host": {
       "version": "0.2.1-rc.5",
       "exe_sha256": "7ae939b5a82b220fbd8ad04dfbafaaedb5a49ab43dc884a5db6381f678dd0cc4",
@@ -71,9 +73,9 @@
       "version": "26.13.0",
       "sha256": "14319838b3f355e0398c13569a90270bce4fc68f25189f58c59b03dadae0e6d5"
     },
-    "artifacts": 78
+    "artifacts": 82
   },
-  "tap_sha256": "f4eff3787c12c55176ecff96dae9592cd8cee367de2be1cc38a514857de9c08c",
+  "tap_sha256": "30a14d0177c158ee501090eb332cea0c1d594e8181a5066a762dd5c111ae5988",
   "notes": [
     "tests/host-rpc.test.mjs skips under plain Node by design; it runs under the pinned Electron embedded Node 24.21.0 via tools/test-rc5-host.mjs (evidence/host-rc5/host24.json).",
     "Component tests use the pinned runtime and synthetic fixtures/adapters only; no user profile, credentials or network are touched."

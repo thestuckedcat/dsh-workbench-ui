@@ -52,8 +52,8 @@
     {
       "id": "src-access",
       "path": "src/access.mjs",
-      "sha256": "66e837f06ec6847263aeb76b34cf94a3a2809fabd1d3972058121aa814753a22",
-      "size": 10375,
+      "sha256": "b837da3cd77eb6336d92acfdc402b8aa2a79bead0450bac5ef9fe133a443f8cf",
+      "size": 10405,
       "package": "@local/dsh-workbench-ui",
       "version": "0.1.0-dev.1",
       "license": "UNLICENSED",
@@ -74,8 +74,8 @@
     {
       "id": "src-compat",
       "path": "src/compat.mjs",
-      "sha256": "7514def3373df553b0eb2c372010556e55b8e01a3b5109c5cf6c759ff7d8f84e",
-      "size": 17215,
+      "sha256": "13e925fee80c19d57ff2a745f096f41e2fc479bd2f3f63a34667f5c57750507f",
+      "size": 18187,
       "package": "@local/dsh-workbench-ui",
       "version": "0.1.0-dev.1",
       "license": "UNLICENSED",
@@ -140,13 +140,24 @@
     {
       "id": "src-host-rc5",
       "path": "src/host-rc5.mjs",
-      "sha256": "652c1b6c94410efffa988d7018dcc825da1ef0f7e8df4c42d3eca7dde9fca6b1",
-      "size": 20817,
+      "sha256": "a6c14f7857b5a5385ba20dac1450656af1b492712637302721099fee07707f05",
+      "size": 21488,
       "package": "@local/dsh-workbench-ui",
       "version": "0.1.0-dev.1",
       "license": "UNLICENSED",
       "license_ref": "README.md",
       "source_ref": "workspace/src/host-rc5.mjs"
+    },
+    {
+      "id": "src-http-rpc",
+      "path": "src/http-rpc.mjs",
+      "sha256": "f41a2a35e048489b0684d02f4bf052ea284ea06a753dfbc8fbcb5729bee60763",
+      "size": 6503,
+      "package": "@local/dsh-workbench-ui",
+      "version": "0.1.0-dev.1",
+      "license": "UNLICENSED",
+      "license_ref": "README.md",
+      "source_ref": "workspace/src/http-rpc.mjs"
     },
     {
       "id": "src-profile-store",
@@ -217,8 +228,8 @@
     {
       "id": "tools-host-rc5-asar",
       "path": "tools/host-rc5/asar.mjs",
-      "sha256": "73551f4325eb73f212883bc0c4f099c6fee31802b1fb4e362dd90a2152705991",
-      "size": 5515,
+      "sha256": "0d98a8fec1899d8fdab02a3112d10b29d717d931860b2448c357addc63f5f9bc",
+      "size": 5587,
       "package": "@local/dsh-workbench-ui",
       "version": "0.1.0-dev.1",
       "license": "UNLICENSED",
@@ -239,13 +250,46 @@
     {
       "id": "tools-host-rc5-probe",
       "path": "tools/host-rc5/probe.mjs",
-      "sha256": "cec7f3d4e2a12195aacc035672b802e5ffa544c4422a906344b11f667efa0355",
-      "size": 3700,
+      "sha256": "fbffd783f30aa2446bbe70c62f794c33f602c8bd6edd80ee49d96bb09fd2e41b",
+      "size": 4151,
       "package": "@local/dsh-workbench-ui",
       "version": "0.1.0-dev.1",
       "license": "UNLICENSED",
       "license_ref": "README.md",
       "source_ref": "workspace/tools/host-rc5/probe.mjs"
+    },
+    {
+      "id": "tools-isolated-profile-verify",
+      "path": "tools/isolated-profile-verify.mjs",
+      "sha256": "fb40c03e4247aefb491f4bf73c28969f19698c7a4b414284e373238010f53f7b",
+      "size": 17634,
+      "package": "@local/dsh-workbench-ui",
+      "version": "0.1.0-dev.1",
+      "license": "UNLICENSED",
+      "license_ref": "README.md",
+      "source_ref": "workspace/tools/isolated-profile-verify.mjs"
+    },
+    {
+      "id": "tools-isolated-profile-electron-probe",
+      "path": "tools/isolated-profile/electron-probe.cjs",
+      "sha256": "aca23257d57af85ea958933de5d09ac13081a03f6b742ee6325a49e477aea201",
+      "size": 9604,
+      "package": "@local/dsh-workbench-ui",
+      "version": "0.1.0-dev.1",
+      "license": "UNLICENSED",
+      "license_ref": "README.md",
+      "source_ref": "workspace/tools/isolated-profile/electron-probe.cjs"
+    },
+    {
+      "id": "tools-isolated-profile-package",
+      "path": "tools/isolated-profile/package.json",
+      "sha256": "d4a6387a7cd32d2a0b2c6e3555c769fde14252feae7125f4eba4bab27863052c",
+      "size": 232,
+      "package": "@local/dsh-workbench-ui",
+      "version": "0.1.0-dev.1",
+      "license": "UNLICENSED",
+      "license_ref": "README.md",
+      "source_ref": "workspace/tools/isolated-profile/package.json"
     },
     {
       "id": "tools-restore",
@@ -272,8 +316,8 @@
     {
       "id": "tools-smoke",
       "path": "tools/smoke.mjs",
-      "sha256": "740d14d8eb7c3632fbd317d2b8a4ab4a8760710d2c88b523ea458ec899457290",
-      "size": 15655,
+      "sha256": "dea597c23fe7978184fefe0813e96de0d8f2f947790e22d977de65e38d5e5051",
+      "size": 16080,
       "package": "@local/dsh-workbench-ui",
       "version": "0.1.0-dev.1",
       "license": "UNLICENSED",
@@ -283,8 +327,8 @@
     {
       "id": "tools-source-lock",
       "path": "tools/source-lock.mjs",
-      "sha256": "cd511c2d5c0de528fc0bc75d7329a143cd6d392c12378161d086e42d9b27f2e7",
-      "size": 4914,
+      "sha256": "05b4c8b19631c20b48aa21c08a509a8bda50662af6f6e374a3c939e4290bef19",
+      "size": 4922,
       "package": "@local/dsh-workbench-ui",
       "version": "0.1.0-dev.1",
       "license": "UNLICENSED",

@@ -63,15 +63,18 @@ export function lookupEntry(header, entryPath) {
 
 export function listEntries(header, {filter = '', max = 2000} = {}) {
   const rows = [];
+  const matches = (path) => filter === '' || path.includes(filter);
   const walk = (node, prefix) => {
+    if (rows.length >= max) return;
     for (const [name, entry] of Object.entries(node?.files ?? {})) {
       const full = prefix === '' ? name : `${prefix}/${name}`;
       if (entry?.files !== undefined) walk(entry, full);
-      else if (rows.length < max) rows.push({path: full, size: entry.size ?? 0, unpacked: entry.unpacked === true, executable: entry.executable === true});
+      else if (matches(full)) rows.push({path: full, size: entry.size ?? 0, unpacked: entry.unpacked === true, executable: entry.executable === true});
+      if (rows.length >= max) return;
     }
   };
   walk({files: header.files ?? {}}, '');
-  return filter === '' ? rows : rows.filter((row) => row.path.includes(filter));
+  return rows;
 }
 
 export function readEntry(archive, header, dataOffset, entryPath) {

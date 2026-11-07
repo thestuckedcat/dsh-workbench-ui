@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-11-06T17:57:10.590Z",
+  "generated_at": "2026-11-07T01:16:25.409Z",
   "purpose": "Pinned rc.5 archive/source seams for the local workbench adapter; read-only evidence, no runtime acceptance",
   "host": {
     "version": "0.2.1-rc.5",
@@ -143,6 +143,14 @@
           "ok": true
         },
         {
+          "label": "rpc.intercept",
+          "ok": true
+        },
+        {
+          "label": "connection admit",
+          "ok": true
+        },
+        {
           "label": "handler signature",
           "ok": true
         },
@@ -152,6 +160,27 @@
         },
         {
           "label": "server response schema",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "path": "dsh/node_modules/@deepseek-ai/dsh-host-webserver/lib/index.js",
+      "expected_sha256": "08907285802f0edd3aeb68c91fb443be2804879ab3d41104c4600424be06f3ab",
+      "actual_sha256": "08907285802f0edd3aeb68c91fb443be2804879ab3d41104c4600424be06f3ab",
+      "size": 21436,
+      "hash_ok": true,
+      "probes": [
+        {
+          "label": "route registry register",
+          "ok": true
+        },
+        {
+          "label": "prefix route table",
+          "ok": true
+        },
+        {
+          "label": "duplicate route rejection",
           "ok": true
         }
       ]
@@ -216,7 +245,9 @@
     ],
     "static_modules_source": null,
     "client_bundle_format": "window.__ModuleLoader__.load({id, factory: (require) => ({name, inject, apply})})",
-    "host_rpc": "ctx.connection.rpc.handle(channel, async (endpoint, payload, signal, peer) => value)",
+    "host_rpc_handle": "ctx.connection.rpc.handle(channel, async (endpoint, payload, signal, peer) => value) — registered through the connection fiber; unusable from a consumer context in rc.5 (runtime-verified)",
+    "host_rpc_interceptor": "ctx.connection.rpc.intercept(\"/api\", matches, handler) — single-owner shared channel in rc.5 (runtime-verified)",
+    "host_carrier": "ctx.webServer.register({kind:\"prefix\", path, handler(req,res)}) + ctx.connection.admit(req) — the verified workbench carrier; frozen client-request/server-response envelope",
     "client_rpc": "ctx.connection.rpc.call(channel, endpoint, payload, signal) -> {ok:true,value}|{ok:false,error}",
     "navigation": "ctx.layout.selectPanel(panel_key|null); main slot kind=keyed scope=root; panellist entry id === main key"
   },

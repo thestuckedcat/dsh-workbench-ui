@@ -1,20 +1,20 @@
 # 08 本地工作台机制说明（供后续 skill 改进）
 
-版本：MECH-08-1；日期：2026-11-07。状态：**首版（stage A）实现机制说明**——已实现并通过自测的是“Harness rc.5 内最小工作台 + 组合事务 + 两个 fixture 模块 + 真实 rc.5 Cordis 运行时挂载”；**05/07 真实能力接入（T5）、完整 profile loader 装载与浏览器内渲染仍是未验证层**，见 §8。后续 skill 修订引用本文稳定机制编号（`WB-*`），编号固定后不回填含义。
+版本：MECH-08-1；日期：2026-11-07。状态：**首版（stage A）实现机制说明**——已实现并通过自测的是“Harness rc.5 内最小工作台 + 组合事务 + 两个 fixture 模块 + 真实 rc.5 Cordis 运行时挂载 + 隔离完整 profile loader 装载 + 真实 Chromium 渲染/返回聊天/重开”；**05/07 真实能力接入（T5）与 OS 出口认证仍是未验证层**，见 §8。后续 skill 修订引用本文稳定机制编号（`WB-*`），编号固定后不回填含义。
 
-对应实现：`src/contracts.mjs`（合同）、`src/compat.mjs`（基线/门禁）、`src/resolve.mjs`/`src/conflicts.mjs`（求解/冲突）、`src/profile-store.mjs`/`src/compose.mjs`（事务/恢复）、`src/access.mjs`/`src/registry.mjs`/`src/actions.mjs`/`src/rpc.mjs`（Host 边界）、`bundle/index.js` + `src/host-rc5.mjs`（Host 装配）、`bundle/client.js`（client 半）、`tools/*`（验收）。证据见 §7。
+对应实现：`src/contracts.mjs`（合同）、`src/compat.mjs`（基线/门禁）、`src/resolve.mjs`/`src/conflicts.mjs`（求解/冲突）、`src/profile-store.mjs`/`src/compose.mjs`（事务/恢复）、`src/access.mjs`/`src/registry.mjs`/`src/actions.mjs`/`src/rpc.mjs`/`src/http-rpc.mjs`（Host 边界与 HTTP 承载）、`bundle/index.js` + `src/host-rc5.mjs`（Host 装配）、`bundle/client.js`（client 半）、`tools/*`（验收，含隔离 profile/浏览器验证）。证据见 §7。
 
 ## 1. 能力与分层（谁负责什么）
 
 | 层 | 08 的职责 | 明确不负责 |
 |---|---|---|
 | skill | 何时打开工作台、如何解释状态/错误、何时建议用户先处理阻断、组合变更前如何解释影响；回答“下一步做什么” | 不能提高模块状态、不能代替 Host 登记上下文、不能绕过 owner/scope 校验 |
-| plugin（Host 半，`bundle/index.js` + `src/host-rc5.mjs`） | 注册唯一 RPC 通道 `/local-workbench`；读取本地非秘密 config；聚合 descriptor 状态；调用所属模块 `planOpen`；提供只读组合预览/应用入口 | 不实现 05/07 业务、不复制数据库、不执行模型/远端操作、不读凭据、不给底层额外数据权限 |
+| plugin（Host 半，`bundle/index.js` + `src/host-rc5.mjs` + `src/http-rpc.mjs`） | 经已审 `webServer` 前缀路由 + `connection.admit` 提供 `/local-workbench/<endpoint>` HTTP RPC 承载；读取本地非秘密 config；聚合 descriptor 状态；调用所属模块 `planOpen`；提供只读组合预览/应用入口 | 不实现 05/07 业务、不复制数据库、不执行模型/远端操作、不读凭据、不给底层额外数据权限 |
 | plugin（client 半，`bundle/client.js`） | rc.5 原生 main panel + 侧栏入口；轮询/展示状态；校验 intent 后仅调用 `ctx.layout.selectPanel`；只读组合差异；可见指令卡 | 不直接读数据库/文件、不自己发 HTTP、不把 `opened` 当业务完成、不自动执行 skill/host_command |
 | profile/事务（`src/profile-store.mjs` + `src/compose.mjs`） | 唯一 profile writer：revision、锁、journal、原子切换、恢复；默认 `restart_required` | 不写用户真实 DSH profile（首版仅 scratch）、不恢复业务数据、不热卸载运行中的 Host |
 | Host/OS | 真实 Cordis 生命周期、连接鉴权（owner peer）、浏览器渲染、进程/端口/文件权限 | 08 只消费已鉴权连接；OS 出口认证未做 |
 
-凭据/数据/生命周期归属：05 记忆数据归 05，03 会话归 03，02 远端任务归 02/01；08 只保存 profile 组合引用、摘要、journal 与工作台入口，不保存任何秘密。08 自己的状态生命周期跟随其 cordis fiber：插件卸载 → RPC 通道与工作台 runtime 一起 dispose。
+凭据/数据/生命周期归属：05 记忆数据归 05，03 会话归 03，02 远端任务归 02/01；08 只保存 profile 组合引用、摘要、journal 与工作台入口，不保存任何秘密。08 自己的状态生命周期跟随其 cordis fiber：插件卸载 → HTTP 路由、工作台 runtime 与订阅一起 dispose。
 
 ## 2. 端到端机制图（可复现的典型旅程：打开工作台→进入记忆→返回聊天）
 
@@ -69,6 +69,7 @@ sequenceDiagram
 | WB-RECOVER-01 | 崩溃/中断后的恢复 | journal+current | prepared/staged 未切换→清 staged 保旧；switched 未 verified→重核旧版本身份后恢复；外部修改→保留双方 partial；无法验证→不删除 | journal `recovered`；current 可能回退 | `tools/restore.mjs --scratch ... --dry-run`；`docs/restore.md` | 报告动作与 needs_manual，不覆盖用户新配置 | 是否自动恢复（首版默认需显式命令） | 硬边界：`src/compose.mjs`/`src/profile-store.mjs` |
 | WB-ACCESS-01 | 任何 RPC 业务请求 | 已鉴权 owner peer + `context_ref`/`expected_scope_generation` | “owner”不等于项目许可：context_ref 必须已本地登记、active、generation 匹配；客户端不能新增范围；`bootstrap` 只允许 context.list | 构造 TrustedContext；失败固定 reason code | `tests/rpc.test.mjs`；`tests/actions.test.mjs` | `OWNER_REQUIRED/CONTEXT_UNBOUND/SCOPE_REVOKED/STALE_SCOPE` 本地文案 | 可解释文案；不可放宽规则 | 硬边界：`src/access.mjs`、`src/rpc.mjs` |
 | WB-RPC-01 | Host/client 业务调用 | 统一请求壳（schema_version/operation_id/context_ref/expected_scope_generation/view_epoch/input） | 未知字段拒绝、decoded JSON≤64KiB、响应≤1MiB；成功 `{status:"ok",data}`，失败固定 `reason_code` 且无 data；handler 全 catch，不抛原始错误 | 业务拒绝仍是 RpcResult 的 value | `tests/rpc.test.mjs`（11）；`tests/host-rpc.test.mjs`（真实 rc.5 Cordis） | 固定本地文案；不展示 Host 路径/堆栈/秘密 | 呈现粒度；不可绕过外壳 | 硬边界：`src/rpc.mjs`、`src/contracts.mjs` |
+| WB-CARRIER-01 | 浏览器到 Host 的传输 | 已鉴权浏览器会话 + 冻结 client-request/server-response 信封 | 运行验证发现 `rpc.handle`/`rpc.intercept` 在消费方 context 不可用：改用已审 `ctx.webServer.register({kind:"prefix",path:"/local-workbench"})` 路由 + `ctx.connection.admit(req)`（Host/Origin 与浏览器会话准入由 connection 决定）；仅 POST、JSON、请求 ≤128KiB、响应 ≤1MiB+64KiB；坏信封/非法 endpoint 回固定 `gateway/bad-request`，handler 异常回固定 `gateway/internal`，不泄漏原文；客户端仍用 `ctx.connection.rpc.call('/local-workbench', endpoint, payload, signal)` | 路由随 fiber dispose；peer 由 admit 返回 | `tests/http-rpc.test.mjs`；`tools/isolated-profile-verify.mjs` 真实 `dsh web` 下验证 | 传输失败→固定 `TRANSPORT_FAILURE`；不自动重发写操作 | 呈现粒度；不能改信封/放宽准入 | 硬边界：`src/http-rpc.mjs`、`src/host-rc5.mjs`；`compat.mjs` 对 webServer/admit 源码探针 |
 | WB-RPC-03 | transport `{ok:false}` | connection 返回失败 | client 映射固定 `TRANSPORT_FAILURE`；展示固定文案；不自动重发写操作 | 不改变业务状态 | `tests/client.test.mjs`（36） | 建议重试（读）/人工核对（写） | 是否自动重试只读轮询 | 硬边界：`bundle/client.js` |
 | WB-REG-01 | descriptor 注册/聚合 | catalog 内模块 + 合法 release/entry | 单 owner；in-process 函数形状；entry/release 必须与 manifest 一致；invalid status→blocked + diagnostic，不把坏 status 传 UI；每 (context,generation) 只订阅一次 | 聚合 revision 递增；after_revision 未变不回正文 | `tests/registry.test.mjs`（8） | 卡片显示阻断原因与诊断入口 | 卡片排序/刷新提示 | 硬边界：`src/registry.mjs` |
 | WB-NAV-01 | 打开某能力 | status 卡入口 + descriptor.planOpen | Host 校验 release/entry/权限并调用 planOpen；intent 必须匹配 owner/scope/generation/context_revision/组合摘要/过期时间（≤5min），panel_key 禁止 conversation/越权路径；client 去重 intent_id；只有 panel 调 `ctx.layout.selectPanel`；skill/host_command 只显示已登记可见指令+复制，不执行 | Host 返回 accepted≠opened；client opened 仅“面板已选中” | `tests/actions.test.mjs`、`tests/rpc.test.mjs`、`tests/client.test.mjs`（36） | 面板未注册/过期/失败→unavailable/stale + receipt；不另找高权限通道 | 指令卡文案、复制行为、是否提示先处理阻断 | 硬边界：`src/actions.mjs`（Host 不调 client 函数）、`bundle/client.js`（只 selectPanel） |
@@ -114,10 +115,12 @@ sequenceDiagram
 
 ## 6. 证据分层与“没有证明什么”
 
-见 `evidence/verification.json`、`evidence/test-summary.json`、`evidence/host-rc5/source-manifest.json`、`evidence/host-rc5/host24.json`：
+见 `evidence/verification.json`、`evidence/test-summary.json`、`evidence/host-rc5/source-manifest.json`、`evidence/host-rc5/host24.json`、`evidence/isolated-profile/verification.json` 与 `evidence/isolated-profile/render.png`：
 
-- **已证明**：普通 Node 26.13.0 全量 151 项测试（149 pass / 2 项真实 Host 测试按设计跳过 / 0 fail，`evidence/tests.tap`）；合同/严格校验、fixture 双模块求解/冲突/事务/恢复、scratch CLI、Host RPC/registry/actions/access 组件行为、client 半在模拟 rc.5 环境中的加载/轮询/导航/清理（36 项）、真实 rc.5 Cordis 内嵌 Node 24.21.0 下 Host 插件挂载+调用+卸载（2/2）。
-- **未证明**：完整 profile loader 装载本 bundle；浏览器内真实渲染/键盘旅程；05/07 真实 descriptor/能力；OS 出口认证；Windows 进程启动时间/真实 profile 原子替换的极端并发。`docs/compatibility-matrix.md` §3 矩阵逐层标注。
+- **已证明**：普通 Node 26.13.0 全量 157 项测试（155 pass / 2 项真实 Host 测试按设计跳过 / 0 fail，`evidence/tests.tap`）；合同/严格校验、fixture 双模块求解/冲突/事务/恢复、scratch CLI、Host RPC/registry/actions/access/HTTP carrier 组件行为、client 半在模拟 rc.5 环境中的加载/轮询/导航/清理（36 项）、真实 rc.5 Cordis 内嵌 Node 24.21.0 下 Host 插件挂载+HTTP 调用+卸载（2/2）。
+- **已证明（隔离完整层，fixture 阶段）**：隔离 `DSH_HOME` + `web` profile 中真实 rc.5 profile loader 装载本 bundle；`__DSH_BOOT__` 71 个 client 插件含 `@local/dsh-workbench-ui` 且 inject 一致；web server 提供的 client bundle 与评审字节精确前缀一致；真实 Chromium 中侧栏入口→面板→fixture 横幅→owner 版本卡片→返回聊天→重开全部通过并截图。
+- **未证明**：05/07 真实 descriptor/能力；OS 出口认证；Windows 进程启动时间/真实（非 scratch）profile 原子替换的极端并发；完整键盘 Tab 旅程与窄/宽布局的人工视觉核对（组件与 DOM 断言覆盖基础 a11y，未做人工走查）；skill 行为质量评估。`docs/compatibility-matrix.md` §3 矩阵逐层标注。
+- 截图可能含宿主自身首次运行/登录引导层（隔离新 `DSH_HOME` 的宿主 UI），工作台 DOM 断言独立记录；该限制写入隔离验证 JSON。
 - 证据不是“上游项目成功数量”：dsh-context/dsh-pet 只作对照，不构成本项目成绩。
 
 ## 7. 固定身份与命令
@@ -138,14 +141,17 @@ sequenceDiagram
 .\runtime\node.exe tools\compose.mjs --fixture --out .\scratch\compose-smoke
 .\runtime\node.exe tools\restore.mjs --scratch .\scratch\compose-smoke --dry-run
 .\runtime\node.exe tools\test-rc5-host.mjs
+.\runtime\node.exe tools\isolated-profile-verify.mjs
 .\runtime\node.exe tools\smoke.mjs --isolated --fixture --network-evidence
 ```
 
+`tools/isolated-profile-verify.mjs` 使用隔离 `scratch/isolated-profile/` 与真实 `dsh web` 启动/浏览器渲染并写 `evidence/isolated-profile/verification.json`；它不读写用户真实 profile/凭据。
+
 ## 8. 下一次验证（候选改进假设，不是已完成效果）
 
-1. **完整 profile loader 旅程**：在隔离 `DSH_HOME` 创建一个 profile，把本包与 `dsh.client` 声明安装为 bundle，启动 rc.5 Web，验证 `__DSH_BOOT__` graph 含 `@local/dsh-workbench-ui` 且面板/侧栏渲染、返回聊天、键盘旅程；最小反例：故意缺失 `dsh.client.inject` 依赖或错误 client id，应加载失败而不是静默空白。
-2. **浏览器内真实 client 渲染**：用隔离实例的 CDP/截图核对 0/1/多上下文、hidden 暂停、scope 切换丢弃迟到、narrow/wide 布局、fixture 横幅；最小反例：注入旧 scope 响应，UI 不得闪现旧项目。
-3. **T5 真实 05/07**：05 完整 release + 07 实现后，用真实 descriptor 替换 fixture，保持单 writer/observe 订阅一次/scope 一致；最小反例：两个 05 writer 或 05 缺失时 07 可选依赖处理。
-4. **OS 出口认证**：对 Host/Chromium/子进程做实际出口监测；当前只有静态扫描与白名单，不能把静态证据当认证。
-5. **真实 profile 部署/回滚**：非 scratch 的可审差异、备份、离线闭包、Windows 原子替换并发；最小反例：共享占用时保持旧 current。
-6. **skill 行为改进验证**：用脚本化对话验证 skill 在 `blocked/busy/outcome_unknown/restart_required` 下不虚报完成、不过早建议重试；需要新的 skill 评估用例而非本文承诺。
+1. **T5 真实 05/07**：05 完整 release + 07 实现后，用真实 descriptor 替换 fixture，保持单 writer/observe 订阅一次/scope 一致；最小反例：两个 05 writer 或 05 缺失时 07 可选依赖处理；同时复跑隔离 loader/浏览器层并用真实模块动作替代 fixture 入口。
+2. **键盘旅程与布局人工走查**：在隔离实例中用键盘 Tab/Enter 完成“打开→进入→返回聊天”，核对焦点可见、错误摘要聚焦、窄/宽断点（<640px 单列）与 reduced-motion；最小反例：错误后焦点不移动或面板遮挡会话控制。
+3. **OS 出口认证**：对 Host/Chromium/子进程做实际出口监测；当前只有静态扫描与白名单，不能把静态证据当认证。
+4. **真实 profile 部署/回滚**：非 scratch 的可审差异、备份、离线闭包、Windows 原子替换并发；最小反例：共享占用时保持旧 current。
+5. **skill 行为改进验证**：用脚本化对话验证 skill 在 `blocked/busy/outcome_unknown/restart_required` 下不虚报完成、不过早建议重试；需要新的 skill 评估用例而非本文承诺。
+6. **宿主首次运行引导对截图的影响**：隔离新家的宿主 UI 会覆盖截图；若需无覆盖证据，可预置合成设置或用宿主自身状态机完成引导，但不得读写真实凭据。

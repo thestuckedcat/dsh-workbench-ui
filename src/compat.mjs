@@ -86,12 +86,24 @@ export const HOST_FACTS_V1 = Object.freeze({
     {
       path: 'dsh/node_modules/@deepseek-ai/dsh-client-connection/lib/index.js',
       sha256: '0ebcca7583e082716f79b0b55bc1749d48269cc8db2989b043b321b57abd3684',
-      facts: ['ctx.connection.rpc.handle(channel, handler)', 'handler(endpoint, payload, request.signal, peer)', 'browser peer principal.kind==="owner"', 'handler throw becomes 500'],
+      facts: ['ctx.connection.rpc.handle(channel, handler) is registered through the connection fiber (unusable from consumer contexts in rc.5)', 'ctx.connection.rpc.intercept("/api", ...) is single-owner', 'connection.admit(request) admits the authenticated browser peer (verified carrier seam)', 'handler(endpoint, payload, request.signal, peer)', 'browser peer principal.kind==="owner"'],
       probes: [
         {label: 'rpc.handle', pattern: 'handle: \\(channel, handler\\) => this\\.register\\(owner, channel, handler\\)'},
+        {label: 'rpc.intercept', pattern: 'intercept: \\(channel, matches, handler\\)'},
+        {label: 'connection admit', pattern: 'admit\\(request\\)'},
         {label: 'handler signature', pattern: 'handler\\(endpoint, message\\.payload, request\\.signal, peer\\)'},
         {label: 'owner principal', pattern: 'principal: \\{\\s*kind: "owner"\\s*\\}'},
         {label: 'server response schema', pattern: 'serverResponseSchema'},
+      ],
+    },
+    {
+      path: 'dsh/node_modules/@deepseek-ai/dsh-host-webserver/lib/index.js',
+      sha256: '08907285802f0edd3aeb68c91fb443be2804879ab3d41104c4600424be06f3ab',
+      facts: ['ctx.webServer.register({kind:"prefix"|"exact", path, handler}) route registry', 'duplicate (kind, path) throws', 'register returns a disposer'],
+      probes: [
+        {label: 'route registry register', pattern: 'register\\(route\\)'},
+        {label: 'prefix route table', pattern: 'prefixes = .*new Map\\(\\)'},
+        {label: 'duplicate route rejection', pattern: 'duplicate \\$\\{route\\.kind\\} route'},
       ],
     },
     {

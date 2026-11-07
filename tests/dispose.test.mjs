@@ -7,8 +7,8 @@ import {
   createFakeCtx,
   createRecordingConnection,
   fixtureConfig,
+  invokeHttpRoute,
   makeTempRoot,
-  ownerPeer,
   rpcRequest,
 } from './helpers/host-fixtures.mjs';
 
@@ -19,11 +19,15 @@ function scratchHomeWithConfig(config) {
   return {temp, home};
 }
 
-test('host plugin registers one RPC channel, provides the service and disposes cleanly', async () => {
+function fakeCtxFor(host, extra = {}) {
+  return createFakeCtx({connection: host.connection, webServer: host.webServer, ...extra});
+}
+
+test('host plugin registers one HTTP RPC route, provides the service and disposes cleanly', async () => {
   const config = fixtureConfig();
   const {temp, home} = scratchHomeWithConfig(config);
-  const connection = createRecordingConnection();
-  const ctx = createFakeCtx({dshHome: home, connection});
+  const host = createRecordingConnection();
+  const ctx = fakeCtxFor(host, {dshHome: home});
   const intervalCount = {active: 0};
   const originalSetInterval = globalThis.setInterval;
   const originalClearInterval = globalThis.clearInterval;
@@ -38,27 +42,26 @@ test('host plugin registers one RPC channel, provides the service and disposes c
   try {
     const plugin = createHostPlugin();
     assert.equal(plugin.name, 'local-workbench');
-    assert.deepEqual(plugin.inject, ['connection']);
+    assert.deepEqual(plugin.inject, ['connection', 'webServer']);
     await plugin.apply(ctx);
-    assert.equal(connection.handlers.size, 1);
-    assert.ok(connection.handlers.has('/local-workbench'));
+    assert.equal(host.routes.size, 1);
+    assert.ok(host.routes.has('/local-workbench'));
     const service = ctx.provided.get('localWorkbench');
     assert.equal(service.fixture_mode, true);
     assert.equal(service.blocked_reason, null);
 
-    // The full RPC path through the fake connection service.
-    const listed = await connection.call('/local-workbench', 'context.list', rpcRequest(null, {}), undefined, ownerPeer());
+    const context = config.contexts[0];
+    const listed = await invokeHttpRoute(host.routes.get('/local-workbench'), {endpoint: 'context.list', payload: rpcRequest(null, {})});
     assert.equal(listed.ok, true);
     assert.equal(listed.value.status, 'ok');
     assert.equal(listed.value.data.contexts[0].context_ref, 'ctx-one');
-    const context = config.contexts[0];
-    const status = await connection.call('/local-workbench', 'status.get', rpcRequest(context, {}), undefined, ownerPeer());
+    const status = await invokeHttpRoute(host.routes.get('/local-workbench'), {endpoint: 'status.get', payload: rpcRequest(context, {})});
     assert.equal(status.ok, true);
     assert.equal(status.value.status, 'ok');
     assert.equal(intervalCount.active, 0, 'host half must not create polling timers');
 
     await ctx.disposeAll();
-    assert.equal(connection.handlers.size, 0, 'connection channel must be released');
+    assert.equal(host.routes.size, 0, 'webServer route must be released');
     assert.equal(ctx.provided.has('localWorkbench'), false, 'service must be released');
     assert.equal(service.disposed, true);
   } finally {
@@ -71,19 +74,19 @@ test('host plugin registers one RPC channel, provides the service and disposes c
 test('missing local config yields a blocked service instead of crashing the profile', async () => {
   const temp = makeTempRoot('workbench-noconfig-');
   const home = temp.dir('empty-home');
-  const connection = createRecordingConnection();
-  const ctx = createFakeCtx({dshHome: home, connection});
+  const host = createRecordingConnection();
+  const ctx = fakeCtxFor(host, {dshHome: home});
   try {
     const plugin = createHostPlugin();
     await plugin.apply(ctx);
     const service = ctx.provided.get('localWorkbench');
     assert.equal(service.blocked_reason, 'PROFILE_NOT_FOUND');
     assert.throws(() => service.registerDescriptor({}));
-    const response = await connection.call('/local-workbench', 'context.list', rpcRequest(null, {}), undefined, ownerPeer());
+    const response = await invokeHttpRoute(host.routes.get('/local-workbench'), {endpoint: 'context.list', payload: rpcRequest(null, {})});
     assert.equal(response.value.status, 'unavailable');
     assert.equal(response.value.reason_code, 'PROFILE_NOT_FOUND');
     await ctx.disposeAll();
-    assert.equal(connection.handlers.size, 0);
+    assert.equal(host.routes.size, 0);
   } finally {
     temp.cleanup();
   }
@@ -111,30 +114,26 @@ test('config path can be overridden for an isolated boot and is loaded strictly'
 test('plugin dispose is idempotent and a second runtime cannot double-register', async () => {
   const config = fixtureConfig();
   const {temp, home} = scratchHomeWithConfig(config);
-  const connection = createRecordingConnection();
-  const ctx = createFakeCtx({dshHome: home, connection});
+  const host = createRecordingConnection();
+  const ctx = fakeCtxFor(host, {dshHome: home});
   try {
     const plugin = createHostPlugin();
     await plugin.apply(ctx);
-    const first = handlersSnapshot(connection);
+    const first = [...host.routes.keys()];
     await ctx.disposeAll();
     await ctx.disposeAll();
     assert.equal(first.length, 1);
-    assert.equal(connection.handlers.size, 0);
+    assert.equal(host.routes.size, 0);
   } finally {
     temp.cleanup();
   }
 });
 
-function handlersSnapshot(connection) {
-  return [...connection.handlers.keys()];
-}
-
 test('the host plugin never reads credentials or user profiles on apply', async () => {
   const config = fixtureConfig();
   const {temp, home} = scratchHomeWithConfig(config);
-  const connection = createRecordingConnection();
-  const ctx = createFakeCtx({dshHome: home, connection});
+  const host = createRecordingConnection();
+  const ctx = fakeCtxFor(host, {dshHome: home});
   try {
     await createHostPlugin().apply(ctx);
     const service = ctx.provided.get('localWorkbench');

@@ -1,11 +1,10 @@
 # Bundle patch layer for @local/dsh-workbench-ui.
 #
 # One host row (this package's main entry) plus its dsh.client declaration,
-# which makes the rc.5 web app load ./client as the browser half. No dynamic
-# URL, no remote expression and no market/update component is added here.
+# which makes the rc.5 web app load ./client as the browser half. The workbench
+# reads its local strict config from $DSH_HOME/workbench/workbench.json (or an
+# explicit DSH_WORKBENCH_CONFIG). No dynamic URL, no remote expression and no
+# market/update component is added here.
 - insert:
     - id: local-workbench
       name: '@local/dsh-workbench-ui'
-      config:
-        # Optional local config override. Defaults to <DSH_HOME>/workbench/workbench.json.
-        config_ref: 'workbench/workbench.json'

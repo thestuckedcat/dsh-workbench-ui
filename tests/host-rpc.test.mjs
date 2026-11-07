@@ -2,16 +2,24 @@
 // Node 24 via tools/test-rc5-host.mjs; skipped under the plain Node 26 runner).
 //
 // This is the "real Cordis, real lifecycle" layer: the workbench host plugin is
-// mounted into a real pinned rc.5 Context with a local connection-service
-// double, exercised end to end, then disposed. It does not boot a profile or
-// render the client half; that stays a separately recorded limitation.
+// mounted into a real pinned rc.5 Context with a local webServer/connection
+// double, exercised end to end over its HTTP RPC carrier, then disposed. It
+// does not boot a profile or render the client half; that stays a separately
+// recorded limitation.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mkdtempSync, mkdirSync, writeFileSync, rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import {pathToFileURL} from 'node:url';
-import {fixtureConfig, ownerPeer, nonOwnerPeer, rpcRequest} from './helpers/host-fixtures.mjs';
+import {
+  createRecordingConnection,
+  fixtureConfig,
+  invokeHttpRoute,
+  nonOwnerPeer,
+  ownerPeer,
+  rpcRequest,
+} from './helpers/host-fixtures.mjs';
 
 const HOST_ROOT = process.env.DSH_AUDIT_APP_ROOT;
 const RUN = typeof HOST_ROOT === 'string' && HOST_ROOT.endsWith('/dsh') && process.versions.electron !== undefined;
@@ -27,6 +35,18 @@ function scratchConfig() {
   return {dir, path, cleanup: () => rmSync(dir, {recursive: true, force: true})};
 }
 
+async function provideHostServices(ctx) {
+  const host = createRecordingConnection();
+  await ctx.plugin({
+    name: 'audit-host-services-double',
+    apply(inner) {
+      inner.provide('connection', host.connection);
+      inner.provide('webServer', host.webServer);
+    },
+  });
+  return host;
+}
+
 test('real pinned rc.5 Cordis mounts, serves and disposes the workbench host plugin', {skip: !RUN}, async (t) => {
   assert.equal(process.versions.node, '24.21.0');
   assert.equal(process.versions.electron, '44.7.0');
@@ -35,29 +55,7 @@ test('real pinned rc.5 Cordis mounts, serves and disposes the workbench host plu
   t.after(async () => {
     await ctx.fiber.dispose();
   });
-  const handlers = new Map();
-  const connection = {
-    rpc: {
-      handle(channel, handler) {
-        assert.equal(typeof channel, 'string');
-        assert.equal(typeof handler, 'function');
-        handlers.set(channel, handler);
-        const dispose = ctx.effect(() => () => {
-          handlers.delete(channel);
-        }, 'audit: connection channel');
-        return () => {
-          dispose();
-          handlers.delete(channel);
-        };
-      },
-    },
-  };
-  await ctx.plugin({
-    name: 'audit-connection-double',
-    apply(inner) {
-      inner.provide('connection', connection);
-    },
-  });
+  const host = await provideHostServices(ctx);
 
   const scratch = scratchConfig();
   t.after(() => scratch.cleanup());
@@ -65,30 +63,37 @@ test('real pinned rc.5 Cordis mounts, serves and disposes the workbench host plu
   try {
     const bundle = await import(BUNDLE);
     assert.equal(bundle.name, 'local-workbench');
-    assert.deepEqual(bundle.inject, ['connection']);
+    assert.deepEqual(bundle.inject, ['connection', 'webServer']);
     const fiber = ctx.plugin(bundle);
     await fiber;
-    assert.equal(handlers.size, 1);
-    const handler = handlers.get('/local-workbench');
+    assert.equal(host.routes.size, 1);
+    const route = host.routes.get('/local-workbench');
+    assert.ok(route);
     const service = ctx.get('localWorkbench');
     assert.ok(service);
     assert.equal(service.fixture_mode, true);
 
     const config = fixtureConfig();
     const context = config.contexts[0];
-    const listed = await handler('context.list', rpcRequest(null, {}), undefined, ownerPeer());
-    assert.equal(listed.status, 'ok');
-    assert.equal(listed.data.contexts.length, 1);
-    const status = await handler('status.get', rpcRequest(context, {}), undefined, ownerPeer());
-    assert.equal(status.status, 'ok');
-    assert.equal(status.data.modules.length, 2);
-    assert.ok(status.data.modules.every((module) => module.state === 'ready'));
-    const denied = await handler('context.list', rpcRequest(null, {}), undefined, nonOwnerPeer());
-    assert.equal(denied.status, 'denied');
-    assert.equal(denied.reason_code, 'OWNER_REQUIRED');
+    const listed = await invokeHttpRoute(route, {endpoint: 'context.list', payload: rpcRequest(null, {})});
+    assert.equal(listed.ok, true);
+    assert.equal(listed.value.status, 'ok');
+    assert.equal(listed.value.data.contexts.length, 1);
+    const status = await invokeHttpRoute(route, {endpoint: 'status.get', payload: rpcRequest(context, {})});
+    assert.equal(status.ok, true);
+    assert.equal(status.value.status, 'ok');
+    assert.equal(status.value.data.modules.length, 2);
+    assert.ok(status.value.data.modules.every((module) => module.state === 'ready'));
+    const denied = await invokeHttpRoute(route, {endpoint: 'context.list', payload: rpcRequest(null, {}), peer: nonOwnerPeer()});
+    assert.equal(denied.value.status, 'denied');
+    assert.equal(denied.value.reason_code, 'OWNER_REQUIRED');
+    const badEnvelope = await invokeHttpRoute(route, {endpoint: 'status.get', payload: rpcRequest(null, {}), peer: ownerPeer()});
+    assert.equal(badEnvelope.ok, true, 'owner bootstrap status is a business denial, not a transport failure');
+    assert.equal(badEnvelope.value.status, 'denied');
+    assert.equal(badEnvelope.value.reason_code, 'CONTEXT_UNBOUND');
 
     await fiber.dispose();
-    assert.equal(handlers.size, 0, 'channel registration must be released by the real fiber');
+    assert.equal(host.routes.size, 0, 'webServer route must be released by the real fiber');
     assert.equal(service.disposed, true, 'runtime must be disposed with the plugin fiber');
   } finally {
     delete process.env.DSH_WORKBENCH_CONFIG;
@@ -101,20 +106,7 @@ test('real pinned rc.5 Context keeps a blocked workbench when config is missing'
   t.after(async () => {
     await ctx.fiber.dispose();
   });
-  const handlers = new Map();
-  await ctx.plugin({
-    name: 'audit-connection-double',
-    apply(inner) {
-      inner.provide('connection', {
-        rpc: {
-          handle(channel, handler) {
-            handlers.set(channel, handler);
-            return () => handlers.delete(channel);
-          },
-        },
-      });
-    },
-  });
+  const host = await provideHostServices(ctx);
   const previous = process.env.DSH_WORKBENCH_CONFIG;
   process.env.DSH_WORKBENCH_CONFIG = join(tmpdir(), 'workbench-missing-config.json');
   try {
@@ -122,11 +114,12 @@ test('real pinned rc.5 Context keeps a blocked workbench when config is missing'
     await ctx.plugin(bundle);
     const service = ctx.get('localWorkbench');
     assert.equal(service.blocked_reason, 'PROFILE_NOT_FOUND');
-    const response = await handlers.get('/local-workbench')('context.list', rpcRequest(null, {}), undefined, ownerPeer());
-    assert.equal(response.status, 'unavailable');
-    assert.equal(response.reason_code, 'PROFILE_NOT_FOUND');
+    const route = host.routes.get('/local-workbench');
+    const response = await invokeHttpRoute(route, {endpoint: 'context.list', payload: rpcRequest(null, {})});
+    assert.equal(response.value.status, 'unavailable');
+    assert.equal(response.value.reason_code, 'PROFILE_NOT_FOUND');
     await ctx.fiber.dispose();
-    assert.equal(handlers.size, 0);
+    assert.equal(host.routes.size, 0);
   } finally {
     if (previous === undefined) delete process.env.DSH_WORKBENCH_CONFIG;
     else process.env.DSH_WORKBENCH_CONFIG = previous;

@@ -21,6 +21,7 @@ import {
   fixtureConfig,
   fixtureContext,
   fixtureManifest,
+  invokeHttpRoute,
   makeTempRoot,
   ownerPeer,
   rpcRequest,
@@ -170,21 +171,23 @@ test('resolveDshHome prefers the host service then DSH_HOME then null', () => {
   }}, {DSH_HOME: 'E:/env/home'}), 'E:/env/home');
 });
 
-test('plugin works through a fake connection service with an explicit config override', async () => {
+test('plugin works through a fake Host service pair with an explicit config override', async () => {
   const {createHostPlugin} = await import('../src/host-rc5.mjs');
   const config = fixtureConfig();
   const temp = makeTempRoot('workbench-plugin-');
   temp.write('config/workbench.json', config);
-  const connection = createRecordingConnection();
-  const ctx = createFakeCtx({connection});
+  const host = createRecordingConnection();
+  const ctx = createFakeCtx({connection: host.connection, webServer: host.webServer});
   const previous = process.env.DSH_WORKBENCH_CONFIG;
   process.env.DSH_WORKBENCH_CONFIG = join(temp.root, 'config', 'workbench.json');
   try {
     await createHostPlugin().apply(ctx);
-    const listed = await connection.call('/local-workbench', 'context.list', rpcRequest(null, {}), undefined, ownerPeer());
+    const route = host.routes.get('/local-workbench');
+    assert.ok(route);
+    const listed = await invokeHttpRoute(route, {endpoint: 'context.list', payload: rpcRequest(null, {})});
     assert.equal(listed.value.status, 'ok');
     const context = config.contexts[0];
-    const status = await connection.call('/local-workbench', 'status.get', rpcRequest(context, {}), undefined, ownerPeer());
+    const status = await invokeHttpRoute(route, {endpoint: 'status.get', payload: rpcRequest(context, {})});
     assert.equal(status.value.status, 'ok');
     await ctx.disposeAll();
   } finally {

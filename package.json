@@ -23,8 +23,7 @@
     "vendor/semver/ranges",
     "vendor/semver/preload.js",
     "vendor/semver/package.json",
-    "cordis.patch.yml",
-    "ui"
+    "cordis.patch.yml"
   ],
   "engines": {
     "node": ">=24.9.0",
@@ -51,6 +50,9 @@
   },
   "scripts": {
     "test": "node --test tests/*.test.mjs",
+    "verify": "node tools/run-all-tests.mjs",
+    "verify:host24": "node tools/test-rc5-host.mjs",
+    "verify:isolated": "node tools/isolated-profile-verify.mjs",
     "doctor": "node tools/doctor.mjs --isolated --host 0.2.1-rc.5",
     "smoke": "node tools/smoke.mjs --isolated --fixture"
   },

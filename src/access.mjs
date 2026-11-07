@@ -106,6 +106,7 @@ export function createAccessRegistry(input, {now = () => new Date().toISOString(
         profile_ref: display.profile_ref,
         profile_revision: display.profile_revision,
         selected_module_ids: display.selected_module_ids.slice(),
+        active: entry.active,
       });
     }
     rows.sort((left, right) => left.context_ref.localeCompare(right.context_ref));

@@ -40,7 +40,9 @@ function main() {
     ],
     static_modules_source: staticModuleRow === undefined ? null : {path: staticModuleRow.path, sha256: staticModuleRow.sha256},
     client_bundle_format: 'window.__ModuleLoader__.load({id, factory: (require) => ({name, inject, apply})})',
-    host_rpc: 'ctx.connection.rpc.handle(channel, async (endpoint, payload, signal, peer) => value)',
+    host_rpc_handle: 'ctx.connection.rpc.handle(channel, async (endpoint, payload, signal, peer) => value) — registered through the connection fiber; unusable from a consumer context in rc.5 (runtime-verified)',
+    host_rpc_interceptor: 'ctx.connection.rpc.intercept("/api", matches, handler) — single-owner shared channel in rc.5 (runtime-verified)',
+    host_carrier: 'ctx.webServer.register({kind:"prefix", path, handler(req,res)}) + ctx.connection.admit(req) — the verified workbench carrier; frozen client-request/server-response envelope',
     client_rpc: 'ctx.connection.rpc.call(channel, endpoint, payload, signal) -> {ok:true,value}|{ok:false,error}',
     navigation: 'ctx.layout.selectPanel(panel_key|null); main slot kind=keyed scope=root; panellist entry id === main key',
   };
